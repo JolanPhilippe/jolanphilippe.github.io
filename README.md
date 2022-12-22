@@ -1,0 +1,3 @@
+# Jolan PHILIPPE, Ph.D
+
+This is the professional website of Dr. Jolan Philippe. Jolan Philippe is from Orléans, France, where he got his BSc degree in business informatics. In 2016, he joined the Orléans Laboratory of Fundamental Computer Science (LIFO) as a research assistant. He worked at Northern Arizona University as a research assistant, where he received his MSc degree in 2019. He obtained a Ph.D. in Nantes, France, at the IMT Atlantique engineering school. His current research interests include distributed systems, model-driven engineering, and formal methods.
