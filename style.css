@@ -1,0 +1,117 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.title {
+    text-align: center;
+    color: #3BA1A8;
+    margin-bottom: -10px; /* Adjust the margin-bottom as needed */
+}
+
+nav {
+    /* background-color: #168992; */
+    background-color: #3BA1A8;
+    padding: 10px 20px;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo a {
+    color: white;
+    text-decoration: none;
+    font-size: 30px;
+}
+
+.links {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.links a {
+    color: white;
+    text-decoration: none;
+    font: bold;
+    margin-left: 30px;
+    position: relative;
+    font-size: 22px; 
+}
+
+.links a:hover {
+    color: #144447;
+}
+
+
+.links a:hover::after {
+    content: "";
+    display: block;
+    width: calc(100% - 20px); /* Adjusted width */
+    height: 2px;
+    background-color: #144447;
+    position: absolute;
+    bottom: -2px;
+    left: 0; /* Adjusted left position */
+}
+.links-current {
+    color: #144447;
+}
+
+@font-face {
+    font-family: 'Star Jhol';
+    src: url('fonts/Starjhol.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'Star Jedi';
+    src: url('fonts/Starjedi.ttf') format('truetype');
+}
+
+@media screen and (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+    }
+
+    .logo,
+    .links {
+        width: 100%;
+        text-align: center;
+    }
+
+    .links a {
+        margin: 10px;
+    }
+}
+
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+}
+
+.profile-picture {
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    border: 2px solid #168992; /* Thin blue border */
+}
+
+.description {
+    margin-left: 20px;
+}
+
+.description p {
+    font-size: 18px;
+    line-height: 1.5;
+}
+
+.no-dec-link {
+    text-decoration: none;
+}
