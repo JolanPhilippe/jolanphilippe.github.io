@@ -8,6 +8,13 @@ body {
     color: #3BA1A8;
     margin-bottom: -10px; /* Adjust the margin-bottom as needed */
 }
+.subtitle {
+    /* text-align: center; */
+    color: #3BA1A8;
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
 
 nav {
     /* background-color: #168992; */
@@ -112,6 +119,14 @@ nav {
     line-height: 1.5;
 }
 
+.citation p {
+    font-size: 16px;
+}
+
 .no-dec-link {
     text-decoration: none;
+}
+
+li {
+    margin-bottom: 5px; /* Adjust the margin-bottom as needed */
 }
