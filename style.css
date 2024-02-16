@@ -130,3 +130,9 @@ nav {
 li {
     margin-bottom: 5px; /* Adjust the margin-bottom as needed */
 }
+
+.image-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px; /* Adjust the gap between images */
+  }
