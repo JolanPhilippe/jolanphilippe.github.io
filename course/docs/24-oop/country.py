@@ -7,10 +7,11 @@ class City:
         
     def __str__(self):
         return f"{self.name}"
-        
+    
     def isACapitalCity(city):
         return city.country.capital == city
-
+    
+  
 class Country:
     
     def __init__(self, name, capital):
@@ -41,7 +42,6 @@ class Country:
             city.country = None
         else:
             raise Exception(f"{city} is not a city of {self}")
-        
 
 if __name__ == "__main__":
     nantes = City("Nantes", 332417)
@@ -52,12 +52,7 @@ if __name__ == "__main__":
     for city in cities:
         try:
             france.add_city(city)
-        except Exception as e:
-            print(e)
+        except:
+            pass
     for city in cities:
-        if City.isACapitalCity(city):
-            print(f"{city} is a capital city")  
-        else:
-            print(f"{city} is not a capital city")  
-    
-    
+        print(f"{city} is a capital: {City.isACapitalCity(city)}")

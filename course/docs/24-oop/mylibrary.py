@@ -1,19 +1,11 @@
 class Library:
     
     def __init__(self, name, address, size, rank):
-        self.__name = name
+        self.name = name
         self.address = address
         self.size = size
         self.rank = rank
         self.shelves = []
-        
-    def get_name(self):
-        return self.__name
-        
-    def set_name(self, new_name):
-        if new_name != "":
-            raise Exception("Empty names are not allowed")
-        self.__name = new_name
     
     def __str__(self):
         result = f"{self.name} ({self.address})"
@@ -32,14 +24,15 @@ class Library:
         self.shelves.append(empty_shelf)
         return empty_shelf
     
-    def _addBook(self, book, shelf_number):
+    def addBook(self, book, shelf_number):
         for shelf in self.shelves:
             if shelf.number == shelf_number:
                 shelf.addBook(book)
                 return
         shelf = self.addShelfByNumber(shelf_number)
         shelf.addBook(book)
-        
+        # raise Exception(f"The shelf number {shelf_number} does not exist.")
+    
     
 class Shelf:
     
@@ -74,5 +67,3 @@ if __name__ == "__main__":
     book = Book("I Love Python", "Author", "04/03/2024")
     library.addBook(book, 10)
     print(library)
-    library.set_name("New name")
-    library.addBook()
