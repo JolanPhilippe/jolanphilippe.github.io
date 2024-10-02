@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico"> 
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+
+    <title>Jolan Philippe - Talks</title>
+    <style>
+        table {
+          border-collapse: collapse;
+        }
+    
+        th, td {
+          padding: 8px 12px;
+          border: 1px solid #ddd;
+          text-align: center;
+        }
+    
+        th {
+          cursor: pointer;
+          background-color: #f2f2f2;
+        }
+    
+        th:hover {
+          background-color: #ddd;
+        }
+
+        .filter-container {
+          margin-bottom: 10px;
+        }
+      </style>
+</head>
+<body>
+    <nav>
+        <div class="navbar">
+            <div class="logo">
+                <a href="index.html" style="font-family: 'Star Jedi', sans-serif">Jolan Philippe</a>
+            </div>
+            <div class="links">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="publications.html">Publications</a>
+                <a href="talks.html">Talks</a>
+                <a href="research.html">Research</a>
+                <a href="projects.html">Projects</a>
+                <a href="teaching.html">Teaching</a>
+                <a href="activities.html">Activities</a>
+            </div>
+        </div>
+    </nav>
+    </div>
+
+
+<div class="filter-container">
+    <label for="distanceFilter">Filter by Distance (km): </label>
+    <select id="distanceFilter" onchange="filterByDistance()">
+      <option value="all">All</option>
+      <option value="20km">20km</option>
+      <option value="10km">10km</option>
+      <option value="5km">5km</option>
+      <option value="marathon">Marathon</option>
+      <option value="semi-marathon">Semi-marathon</option>
+      <!-- Add more distance options here if needed -->
+    </select>
+  </div>
+  
+  <table id="sortableTable">
+    <thead>
+      <tr>
+        <th onclick="sortTable(0)">Date</th>
+        <th onclick="sortTable(1)">Race</th>
+        <th onclick="sortTable(2)">Bib number</th>
+        <th onclick="sortTable(3)">Distance</th>
+        <th onclick="sortTable(4)">Time</th>
+        <th onclick="sortTable(5)">Speed</th>
+        <th onclick="sortTable(6)">Pace</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>15/09/24</td>
+            <td>RunForPlanet</td>
+            <td>2549</td>
+            <td>10</td>
+            <td>00:47:59</td>
+            <td>12.5 km/h</td>
+            <td>4'47/km</td>
+        </tr>
+        <tr>
+            <td>22/04/23</td>
+            <td>Foulées de l'Eléphant</td>
+            <td>14228</td>
+            <td>10</td>
+            <td>00:45:19</td>
+            <td>13.24 km/h</td>
+            <td>4'31/km</td>
+        </tr>
+        <tr>
+            <td>02/04/23</td>
+            <td>Course Solidaire Uni'Cross</td>
+            <td>192</td>
+            <td>8.5</td>
+            <td>00:38:00</td>
+            <td>13.42 km/h</td>
+            <td>4'28/km</td>
+        </tr>
+        <tr>
+            <td>19/03/23</td>
+            <td>Odysséa</td>
+            <td>12755</td>
+            <td>5</td>
+            <td>00:37:00</td>
+            <td>08.11 km/h</td>
+            <td>7'23/km</td>
+        </tr>
+        <tr>
+            <td>19/03/23</td>
+            <td>Odysséa</td>
+            <td>3784</td>
+            <td>10</td>
+            <td>00:42:28</td>
+            <td>14.13 km/h</td>
+            <td>4'14/km</td>
+        </tr>
+        <tr>
+            <td>24/09/22</td>
+            <td>Foulées du Numérique</td>
+            <td>436</td>
+            <td>20</td>
+            <td>01:28:00</td>
+            <td>13.64 km/h</td>
+            <td>4'24/km</td>
+        </tr>
+        <tr>
+            <td>16/04/22</td>
+            <td>Foulées de l'Eléphant</td>
+            <td>17870</td>
+            <td>10</td>
+            <td>00:46:26</td>
+            <td>12.92 km/h</td>
+            <td>4'38/km</td>
+        </tr>
+        <tr>
+            <td>01/10/22</td>
+            <td>La Duchesse</td>
+            <td>892</td>
+            <td>10</td>
+            <td>01:05:00</td>
+            <td>9.23 km/h</td>
+            <td>6'29/km</td>
+        </tr>
+        <tr>
+            <td>01/10/22</td>
+            <td>Foulées Vikings</td>
+            <td>1104</td>
+            <td>10.5</td>
+            <td>00:46:34</td>
+            <td>13.53 km/h</td>
+            <td>4'26/km</td>
+        </tr>
+        <tr>
+            <td>20/03/22</td>
+            <td>Odysséa</td>
+            <td>2413</td>
+            <td>10</td>
+            <td>00:43:18</td>
+            <td>13.86 km/h</td>
+            <td>4'19/km</td>
+        </tr>
+        <tr>
+            <td>20/03/22</td>
+            <td>Odysséa</td>
+            <td>6842</td>
+            <td>5</td>
+            <td>00:25:00</td>
+            <td>12.00 km/h</td>
+            <td>5'00/km</td>
+        </tr>
+        <tr>
+            <td>14/11/21</td>
+            <td>Semi marathon de Nantes</td>
+            <td>13974</td>
+            <td>semi-marathon</td>
+            <td>01:45:07</td>
+            <td>12.04 km/h</td>
+            <td>4'58/km</td>
+        </tr>
+        <tr>
+            <td>09/02/20</td>
+            <td>10km de la Choliere</td>
+            <td>899</td>
+            <td>10</td>
+            <td>00:41:11</td>
+            <td>14.57 km/h</td>
+            <td>4'07/km</td>
+        </tr>
+        <tr>
+            <td>11/11/18</td>
+            <td>Veteran's day run</td>
+            <td>325</td>
+            <td>5</td>
+            <td>?</td>
+            <td>?</td>
+            <td>?</td>
+        </tr>
+        <tr>
+            <td>21/04/18</td>
+            <td>SAM</td>
+            <td>51</td>
+            <td>5</td>
+            <td>00:20:01</td>
+            <td>15 km/h</td>
+            <td>4'00/km</td>
+        </tr>
+        <tr>
+            <td>10/03/18</td>
+            <td>SP Crater Marathon</td>
+            <td>15</td>
+            <td>marathon</td>
+            <td>03:38:21</td>
+            <td>11.59 km/h</td>
+            <td>5'10/km</td>
+        </tr>
+        <tr>
+            <td>04/02/18</td>
+            <td>Semi marathon de Sedona</td>
+            <td>1815</td>
+            <td>semi-marathon</td>
+            <td>01:38:56</td>
+            <td>12.79 km/h</td>
+            <td>4'41/km</td>
+        </tr>
+        <tr>
+            <td>11/11/17</td>
+            <td>Rock'n'roll Marathon Las Vegas</td>
+            <td>6295</td>
+            <td>marathon</td>
+            <td>03:28:30</td>
+            <td>11.59 km/h</td>
+            <td>5'10/km</td>
+        </tr>
+        <tr>
+            <td>09/04/17</td>
+            <td>Marathon de Paris</td>
+            <td>19131</td>
+            <td>marathon</td>
+            <td>04:00:30</td>
+            <td>10.53 km/h</td>
+            <td>5'41/km</td>
+        </tr>
+        <tr>
+            <td>31/12/16</td>
+            <td>Corrida de la St Sylvestre</td>
+            <td>362</td>
+            <td>8</td>
+            <td>00:35:36</td>
+            <td>13.48 km/h</td>
+            <td>4'27/km</td>
+        </tr>
+        <tr>
+            <td>17/12/16</td>
+            <td>Course de Noël</td>
+            <td>116</td>
+            <td>5</td>
+            <td>00:24:17</td>
+            <td>12.35 km/h</td>
+            <td>4'51/km</td>
+        </tr>
+        <tr>
+            <td>10/12/16</td>
+            <td>Course des 3 ponts</td>
+            <td>426</td>
+            <td>10</td>
+            <td>00:45:54</td>
+            <td>13.07 km/h</td>
+            <td>4'35/km</td>
+        </tr>
+        <tr>
+            <td>02/10/16</td>
+            <td>Foulées Roses</td>
+            <td>3817</td>
+            <td>9.6</td>
+            <td>00:39:51</td>
+            <td>14.45 km/h</td>
+            <td>4'09/km</td>
+        </tr>
+        </tbody>
+  </table>
+  
+  <script>
+    // Sort table columns
+    function sortTable(columnIndex) {
+      const table = document.getElementById("sortableTable");
+      const rows = Array.from(table.rows).slice(1);
+    
+      // Check if the column is date type (in this case, index 0 is date)
+      const isDateColumn = columnIndex === 0;
+      
+      rows.sort((row1, row2) => {
+        const cell1 = row1.cells[columnIndex].innerText;
+        const cell2 = row2.cells[columnIndex].innerText;
+    
+        if (isDateColumn) {
+          // Convert European dates (DD/MM/YY or DD/MM/YYYY) to sortable format (YYYY-MM-DD)
+          return parseDate(cell1) - parseDate(cell2);
+        }
+    
+        const isNumeric = !isNaN(cell1);
+    
+        if (isNumeric) {
+          return parseFloat(cell1) - parseFloat(cell2);
+        } else {
+          return cell1.localeCompare(cell2);
+        }
+      });
+    
+      // Append the sorted rows back into the table body
+      rows.forEach(row => table.tBodies[0].appendChild(row));
+    }
+    
+    // Function to convert European date (DD/MM/YY or DD/MM/YYYY) to a Date object
+    function parseDate(dateStr) {
+      const [day, month, year] = dateStr.split('/').map(Number);
+      
+      // Handle two-digit year (assuming 2000+ for any year less than 100)
+      const fullYear = year < 100 ? 2000 + year : year;
+      
+      return new Date(fullYear, month - 1, day); // month is 0-based in JavaScript Date
+    }
+    </script>
+    
+</body>
+</html>
