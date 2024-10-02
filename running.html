@@ -290,32 +290,47 @@
         </tr>
         </tbody>
   </table>
-  
   <script>
-    // Sort table columns
+    // Keep track of the current sort state
+    let currentSortColumn = -1;
+    let currentSortDirection = 'asc'; // 'asc' for ascending, 'desc' for descending
+    
+    // Sort table columns and toggle between ascending/descending order
     function sortTable(columnIndex) {
       const table = document.getElementById("sortableTable");
-      const rows = Array.from(table.rows).slice(1);
+      const rows = Array.from(table.rows).slice(1); // Skip the header row
     
       // Check if the column is date type (in this case, index 0 is date)
       const isDateColumn = columnIndex === 0;
+    
+      // If the column clicked is the same as the last sorted column, toggle direction
+      if (currentSortColumn === columnIndex) {
+        currentSortDirection = currentSortDirection === 'asc' ? 'desc' : 'asc';
+      } else {
+        currentSortDirection = 'asc'; // Default to ascending for a new column
+      }
       
+      currentSortColumn = columnIndex;
+    
       rows.sort((row1, row2) => {
         const cell1 = row1.cells[columnIndex].innerText;
         const cell2 = row2.cells[columnIndex].innerText;
     
+        let comparison;
         if (isDateColumn) {
           // Convert European dates (DD/MM/YY or DD/MM/YYYY) to sortable format (YYYY-MM-DD)
-          return parseDate(cell1) - parseDate(cell2);
-        }
-    
-        const isNumeric = !isNaN(cell1);
-    
-        if (isNumeric) {
-          return parseFloat(cell1) - parseFloat(cell2);
+          comparison = parseDate(cell1) - parseDate(cell2);
         } else {
-          return cell1.localeCompare(cell2);
+          const isNumeric = !isNaN(cell1);
+          if (isNumeric) {
+            comparison = parseFloat(cell1) - parseFloat(cell2);
+          } else {
+            comparison = cell1.localeCompare(cell2);
+          }
         }
+    
+        // Reverse the order if descending
+        return currentSortDirection === 'asc' ? comparison : -comparison;
       });
     
       // Append the sorted rows back into the table body
@@ -332,6 +347,7 @@
       return new Date(fullYear, month - 1, day); // month is 0-based in JavaScript Date
     }
     </script>
+    
     
 </body>
 </html>
