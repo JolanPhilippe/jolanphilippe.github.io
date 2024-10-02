@@ -59,9 +59,9 @@
     <label for="distanceFilter">Filter by Distance (km): </label>
     <select id="distanceFilter" onchange="filterByDistance()">
       <option value="all">All</option>
-      <option value="20km">20km</option>
-      <option value="10km">10km</option>
-      <option value="5km">5km</option>
+      <option value="20">20km</option>
+      <option value="10">10km</option>
+      <option value="5">5km</option>
       <option value="marathon">Marathon</option>
       <option value="half-marathon">Half-marathon</option>
       <!-- Add more distance options here if needed -->
@@ -346,6 +346,22 @@
       
       return new Date(fullYear, month - 1, day); // month is 0-based in JavaScript Date
     }
+
+    function filterByDistance() {
+        const filterValue = document.getElementById("distanceFilter").value;
+        const table = document.getElementById("sortableTable");
+        const rows = Array.from(table.rows).slice(1);
+      
+        rows.forEach(row => {
+          const distance = row.cells[3].innerText;
+      
+          if (filterValue === "all" || distance === filterValue) {
+            row.style.display = ""; // Show row
+          } else {
+            row.style.display = "none"; // Hide row
+          }
+        });
+      }
     </script>
     
     
