@@ -11,6 +11,19 @@ import transactions.Transaction;
 public class Import {
 
     public static Accounting parse(String pathFileName) throws Exception {
+        final List<Transaction> transactions = new ArrayList<>(import java.io.BufferedReader;
+import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import accounts.Account;
+import transactions.Transaction;
+
+public class Import {
+
+    public static Accounting parse(String pathFileName) throws Exception {
         final List<Transaction> transactions = new ArrayList<>();
         final Set<String> accountLabels = new HashSet<>();
 
@@ -20,12 +33,12 @@ public class Import {
                     final String[] fields = line.split(",");
                     transactions.add(
                         new Transaction(
-                            fields[0],
-                            fields[1],
-                            fields[2],
-                            fields[3],
-                            fields[4],
-                            Integer.parseInt(fields[5])
+                            fields[0].trim(),
+                            fields[1].trim(),
+                            fields[2].trim(),
+                            fields[3].trim(),
+                            fields[4].trim(),
+                            Integer.parseInt(fields[5].trim())
                         )
                     );
                     accountLabels.add(fields[3]);
@@ -39,3 +52,4 @@ public class Import {
         );
     }
 }
+
