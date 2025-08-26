@@ -1,0 +1,55 @@
+\begin{center}
+    
+
+\begin{tikzpicture}
+
+  \node[draw, rectangle, minimum width=3cm] (n1) {
+  \begin{tabular}{c}
+    \large Certification;  \\
+    \large Sémantique \\
+    \large formelle; etc.
+  \end{tabular} 
+  };
+  
+  \node[draw, rectangle, rounded corners=15,  minimum width=3cm, right=3cm of n1] (n2) {
+  \begin{tabular}{c}
+    \large Programme  \\
+    \large exécutable
+  \end{tabular} 
+  };
+  
+  \node[draw, rectangle, rounded corners=15,  minimum width=3cm, below=1.5cm of n1] (n3) {
+  \begin{tabular}{c}
+    \large Programme  \\
+    \large exécutable
+  \end{tabular} 
+  };
+  
+  \node[draw, rectangle, minimum width=3cm, right=3cm of n3] (n4) {
+  \begin{tabular}{c}
+    \large Sémantique \\
+    \large formelle
+  \end{tabular} 
+  };
+
+\draw[-{Stealth[scale=2.0]}] (n1) -- node (f1) [above] {\begin{tabular}{c}
+    \large Extraction \\
+    \large certifiée
+  \end{tabular}} (n2);
+
+\draw[{Stealth[scale=2.0]}-{Stealth[scale=2.0]}] (n3) -- node (f2) [above] {\begin{tabular}{c}
+    \large Équivalence
+  \end{tabular}} (n4);
+
+\node[above=0cm of f1] (L1) {\Large\bf Correction par construction};
+\node[above=0cm of f2] (L2) {\Large\bf Correction à posteriori};
+
+\node[below=1cm of f2] (dijsktra) {
+  \begin{tabular}{c}
+    \large {\it Program testing can be used to show the presence of bugs,} \\
+    \large {\it but never to show their absence.} - {\bf E. W. Dijkstra }
+  \end{tabular}
+  }
+
+\end{tikzpicture}
+\end{center}

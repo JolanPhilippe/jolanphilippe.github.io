@@ -1,0 +1,91 @@
+\begin{tikzpicture}
+
+\node[draw, rectangle, rounded corners=8, minimum height=1.3cm] (package) {
+\begin{tabular}{c}
+Build \\ packaging     
+\end{tabular}
+};
+
+\node[draw, rectangle, rounded corners=8, right=2cm of package, minimum height=1.3cm] (install) {
+\begin{tabular}{c}
+Install \\ and deps
+\end{tabular}
+};
+
+\node[draw, rectangle, rounded corners=8, right=0.8cm of install, minimum height=1.3cm] (config) {
+\begin{tabular}{c}
+Configure \\ apps   
+\end{tabular}
+};
+
+\node[draw, rectangle, rounded corners=8, right=0.8cm of config, minimum height=1.3cm] (integrate) {
+\begin{tabular}{c}
+Integrate \\ apps      
+\end{tabular}
+};
+
+\node[draw, rectangle, rounded corners=8, right=0.8cm of integrate, minimum height=1.3cm] (operate) {
+\begin{tabular}{c}
+Operate \\ apps       
+\end{tabular}
+};
+
+\node[draw, rectangle, rounded corners=10, below=2cm of package, minimum height=1.3cm] 
+(provision) {
+Provisioning
+};
+
+\node[draw, rectangle, rounded corners=8, right=0.8cm of provision, minimum height=1.3cm] (node) {
+\begin{tabular}{c}
+Node and machine \\ configuration 
+\end{tabular}
+};
+
+\node[draw, rectangle, rounded corners=8, right=0.8cm of node, minimum height=1.3cm, minimum width=7.3cm] (infra) {
+Operate infrastructure
+};
+
+
+
+
+\draw[-{Stealth[scale=2.0]}] (install) -- (config); 
+\draw[-{Stealth[scale=2.0]}] (config) -- (integrate); 
+\draw[-{Stealth[scale=2.0]}] (integrate) -- (operate); 
+
+\draw[-{Stealth[scale=2.0]}] (provision) -- (node); 
+\draw[-{Stealth[scale=2.0]}] (node) -- (infra);
+
+\draw[dashed,{Stealth[scale=2.0]}-{Stealth[scale=2.0]}]
+    ($(node.north)+(-45pt,0)$) |- (package);
+\draw[-{Stealth[scale=2.0]}]
+    ($(node.north)+(-35pt,0)$) |- (install);
+    
+\draw[{Stealth[scale=2.0]}-{Stealth[scale=2.0]}, dashed]
+  (package.north) -- ++(0,5mm) -- ($(install.north)+(0,5mm)$) -- (install.north);          
+
+% ------------------------
+
+\node[below=1cm of package, xshift=-1cm] (pt1) {};
+\node[below=1cm of operate, xshift=1cm] (pt2) {};
+\draw[-, dotted] (pt1) -- (pt2);    
+     
+% ------------------------
+
+\node[above=0cm of config, xshift=0.5cm]{\includegraphics[height=1.2cm]{images/ansible.png}};
+\node[above=0cm of config, xshift=2.5cm, yshift=0.28cm]{\includegraphics[height=0.8cm]{images/chef.png}};
+\node[above=0cm of config, xshift=4.2cm, yshift=0.1cm]{\includegraphics[height=1cm]{images/puppet.png}};
+
+\node[above=0cm of package, xshift=-0.7cm]{\includegraphics[height=1cm]{images/nix.png}};
+\node[above=0cm of package, xshift=2.3cm, yshift=0.5cm]{\includegraphics[height=0.75cm]{images/docker.png}};
+
+\node[below=-0.8cm of pt2, xshift=-2cm]{\includegraphics[height=1.1cm]{images/kubernetes.jpg}};
+\node[below=-0.8cm of pt2, xshift=-1cm]{\includegraphics[height=1cm]{images/nomad.png}};
+
+% ------------------------
+
+\node[below=0cm of provision, xshift=-0.2cm]{\includegraphics[height=1.2cm]{images/pulumi.png}};
+\node[below=0cm of provision, xshift=1.2cm]{\includegraphics[height=1.2cm]{images/terraform.png}};
+\node[below=0cm of provision, xshift=2.6cm]{\includegraphics[height=1.2cm]{images/cloudformation.png}};
+\node[below=0cm of provision, xshift=3.8cm]{\includegraphics[height=1.2cm]{images/heat.png}};
+
+\end{tikzpicture}

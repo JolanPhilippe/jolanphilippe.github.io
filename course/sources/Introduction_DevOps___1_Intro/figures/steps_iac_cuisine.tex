@@ -1,0 +1,72 @@
+\begin{tikzpicture}
+
+    % \node[] (commit) {Commit Code};
+    
+    \node[] (packaging) {
+    \begin{tabular}{c}
+    \textbf{Management}\\
+    \textbf{d'application}
+    \end{tabular}
+    };
+    \node[below=0cm of packaging] (packagingL) {
+    \begin{tabular}{c}
+    \small Former les cuisiniers: \\
+    \small leur apprendre des\\
+    \small recettes, etc.\\
+    \end{tabular}
+    };
+    
+    % ----------
+
+    \node[right=0.8cm of packaging] (provisioning) {
+    \begin{tabular}{c}
+    \textbf{Provisionnement} \\ 
+    \textbf{d'infrastructure}
+    \end{tabular}
+    };
+    \node[below=0cm of provisioning] (provisioningL) {
+    \begin{tabular}{c}
+    \small Fourni plan de travail,\\ 
+    \small robots de cuisine,\\ 
+    \small four, etc. et les\\ 
+    \small assembler.\\ 
+    \end{tabular}
+    };
+    
+    % ----------
+
+    \node[right=0.8cm of provisioning] (configmanagement) {
+    \begin{tabular}{c}
+    \textbf{Installation et}\\
+    \textbf{Configuration}
+    \end{tabular}
+    };
+    \node[below=0cm of configmanagement] (configmanagementL) {
+    \begin{tabular}{c}
+    \small Assigner les cuisiniers\\
+    \small à des postes, et à des\\
+    \small taches; leur donner des\\
+    \small outils de coms; etc.
+    \end{tabular}
+    };
+
+    % -------
+
+    \node[right=0.8cm of configmanagement] (orchestration) {
+    \begin{tabular}{c}
+    \textbf{Orchestration}\\
+    \textbf{de cycle de vie}
+    \end{tabular}
+    };
+    \node[below=0cm of orchestration] (orchestrationL) {
+    \begin{tabular}{c}
+    \small Avoir un chef de brigade\\
+    \small prêt à changer l'organisation\\
+    \small pour plus d'efficacité, ou\\
+    \small répondre à un imprévu\\
+    \end{tabular}
+    };
+   
+    
+    
+\end{tikzpicture}

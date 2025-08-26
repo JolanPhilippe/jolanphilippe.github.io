@@ -1,0 +1,22 @@
+\begin{tikzpicture}
+
+    \node[](dockerImage){Docker Image};
+    \node[below=0.4cm of dockerImage, xshift=-1.3cm](layer3){layer 3};
+    \node[draw, right=0.8cm of layer3, minimum width=2cm, minimum height=0.7cm, fill=celadon, opacity=0.3](copyfilestmp){};
+    \node[draw, right=0.8cm of layer3, minimum width=2cm, minimum height=0.7cm](copyfiles){copy files};
+    
+    \node[below=0.5cm of layer3](layer2){layer 2};
+    \node[draw, right=0.8cm of layer2, minimum width=2cm, minimum height=0.7cm, fill=celadon, opacity=0.3](copyconfigtmp){};
+    \node[draw, right=0.8cm of layer2, minimum width=2cm, minimum height=0.7cm](copyconfig){copy config};
+    
+    \node[below=0.5cm of layer2](layer1){layer 1};
+    \node[draw, right=0.8cm of layer1, minimum width=2cm, minimum height=0.9cm, fill=blizzardblue, opacity=0.3](installpacktmp){};
+    \node[draw, right=0.8cm of layer1, minimum width=2cm, minimum height=0.9cm](installpack){\renewcommand{\arraystretch}{0.7}\begin{tabular}{c}\small install \\\small package \end{tabular}\renewcommand{\arraystretch}{1.0}};
+    
+    \node[below=0.5cm of layer1](baselayer){base layer};
+    \node[draw, right=0.56cm of baselayer, minimum width=2cm, minimum height=0.7cm, fill=bubblegum, opacity=0.3](alpinetmp){};
+    \node[draw, right=0.56cm of baselayer, minimum width=2cm, minimum height=0.7cm](alpine){Alpine};
+
+    \node[draw, rectangle, rounded corners=9, fit=(dockerImage) (baselayer) (alpine), inner sep=6]{};
+    
+\end{tikzpicture}

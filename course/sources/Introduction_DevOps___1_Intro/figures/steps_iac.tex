@@ -1,0 +1,78 @@
+\begin{tikzpicture}
+
+    % \node[] (commit) {Commit Code};
+    \onslide<1>{}
+    \onslide<2->{
+    \node[] (packaging) {
+    \begin{tabular}{c}
+    \textbf{Management}\\
+    \textbf{d'application}
+    \end{tabular}
+    };
+    \node[below=0cm of packaging] (packagingL) {
+    \begin{tabular}{c}
+    \small Customiser, configurer\\
+    \small tester l'application\\
+    \small et la conteneuriser\\
+    \small 
+    \end{tabular}
+    };
+    }
+    % ----------
+\onslide<3->{
+    \node[right=0.8cm of packaging] (provisioning) {
+    \begin{tabular}{c}
+    \textbf{Provisionnement} \\ 
+    \textbf{d'infrastructure}
+    \end{tabular}
+    };
+    \node[below=0cm of provisioning] (provisioningL) {
+    \begin{tabular}{c}
+    \small Demander ressources\\
+    \small physiques ou virtuelles;\\
+    \small configurer le réseau;\\
+    \small et règles sécurité
+    \end{tabular}
+    };
+    }
+    
+    % ----------
+\onslide<4->{
+
+    \node[right=0.8cm of provisioning] (configmanagement) {
+    \begin{tabular}{c}
+    \textbf{Installation et}\\
+    \textbf{Configuration}
+    \end{tabular}
+    };
+    \node[below=0cm of configmanagement] (configmanagementL) {
+    \begin{tabular}{c}
+    \small Installer les services\\
+    \small (app + deps)\\
+    \small configurer les services;\\
+    \small et les intégrer
+    \end{tabular}
+    };
+    }
+
+    % -------
+\onslide<5->{
+
+    \node[right=0.8cm of configmanagement] (orchestration) {
+    \begin{tabular}{c}
+    \textbf{Orchestration}\\
+    \textbf{de cycle de vie}
+    \end{tabular}
+    };
+    \node[below=0cm of orchestration] (orchestrationL) {
+    \begin{tabular}{c}
+    \small Upgrades auto;\\
+    \small Backup et recovery;\\
+    \small Surveillance;\\
+    \small Passage à l'échelle
+    \end{tabular}
+    };
+    }
+    
+    
+\end{tikzpicture}

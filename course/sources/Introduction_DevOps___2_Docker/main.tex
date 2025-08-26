@@ -1,0 +1,593 @@
+\documentclass[aspectratio=169,10pt]{beamer}
+
+\usetheme[block=fill,progressbar=foot,background=light]{metropolis}   
+\setbeamercolor{background canvas}{bg=white}
+\usepackage{appendixnumberbeamer}
+
+\title{Introduction au DevOps}
+\subtitle{Docker}
+\date{12 Septembre 2025}
+\author{Jolan PHILIPPE}
+\institute{Université d'Orléans}
+
+\input{header}
+
+\begin{document}
+
+\begin{frame}
+    \titlepage 
+\end{frame}
+% -----------------
+
+\begin{frame}{Les rôles des outils d'IaC}
+
+\hspace*{-0.7cm}
+\input{figures/steps_iac}
+
+\url{https://www.docker.com/blog/docker-for-devops/}
+
+\end{frame}
+
+% -----------------
+\section{Un conteneur c'est quoi ?}
+% -----------------
+
+
+\begin{frame}{A propos du kernel Linux}
+
+Le kernel c'est le cœur d'un système d'exploitation (OS)
+
+\begin{itemize}
+    \item C'est une partie de l'OS toujours chargé en mémoire.
+    \item Il contrôle les ressources physiques, ou hardware, (e.g., I/O, mémoire, cryptographie, CPU) en utilisant des pilotes, ou drivers.
+    \item Il arbitre les conflits et la concurrence entre les processus.
+    \item Il optimise l'utilisation de ressources (e.g., cache, mémoire, CPU, système de fichiers, réseau)
+\end{itemize}
+
+Le kernel est l'un des premiers programmes chargé au démarrage.
+
+\end{frame}
+
+% -----------------
+
+\begin{frame}{Comparaison à gros grains entre les VMs et les conteneurs}
+
+\input{figures/vm_contnair}
+
+\end{frame}
+
+% -----------------
+
+\begin{frame}{Conteneurs}
+
+\begin{alertblock}{Avantages des conteneurs}
+   \begin{itemize}
+       \item Isolation
+       \item Portabilité
+       \item Limitations des ressources dupliquées
+       \item Impact limité sur les performances
+       \item Démarrage rapide
+   \end{itemize} 
+   Le modèle est différent et la façon dont les applications sont déployées est différente !
+\end{alertblock}
+
+\end{frame}
+
+% -----------------
+
+\section{Que se cache-t-il dessous ?}
+
+% -----------------
+
+\begin{frame}{Un peu plus à propos de Linux}
+
+Dans Unix/Linux, tout est fichier : une fichier, un dossier, un 
+périphérique, etc.
+
+\begin{alertblock}{Système de fichiers}
+   \begin{itemize}
+       \item Organisation des fichiers hierarchique sous la forme d'un arbre
+       \item \texttt{\textbf{/}} est \alert{la racine du système de fichiers}
+       \item \texttt{\textbf{/sys}} contient les fichiers du système
+       \item \texttt{\textbf{/etc}} contient les fichiers de configuration et les scripts
+       \item \texttt{\textbf{/media}} contient les partitions de disques, périphériques, etc.
+       \item etc.
+   \end{itemize} 
+\end{alertblock}
+
+    \alert{Un conteneur est aussi un ensemble de fichiers}
+
+\end{frame}
+
+% -----------------
+
+\begin{frame}{Images}
+
+Une image de conteneur est une archive de fichiers, incluant:
+
+\begin{itemize}
+   \item une racine de système de fichiers
+   \item des bibliothèques, des packages, etc. (i.e., des dépendances)
+   \item l'application, ou le service, à démarre
+   \item etc.
+\end{itemize} 
+
+L'image contient l'environnement requis pour exécuter l'application ou le service sur le noyau hôte.
+
+\end{frame}
+% -----------------
+
+\begin{frame}{Portabilité des images}
+
+Cet environnement est \alert{portable} d'un hôte à un autre, si un kernel compatible est présent (\alert{WSL2 sur Windows}, ou \alert{VM sur MacOS})
+
+\vspace{0.5cm}
+
+\alert{Attention}: La limite, c’est l’architecture matérielle : par exemple une image construite pour amd64 ne tournera pas nativement sur un hôte arm64 (Mac M1/M2) sans émulation (e.g., qemu).
+
+
+\end{frame}
+
+% -----------------
+
+\begin{frame}{Registre d'images}
+
+ \begin{itemize}
+    \item Les images Docker sont stockées dans des \textbf{registres} (e.g., \textit{Docker Hub} \url{https://hub.docker.com/}).
+    
+    \item La commande \texttt{docker pull} permet de \textbf{télécharger une image} vers la machine locale.
+    
+    \item Exemple : \\
+    \texttt{\textbf{> docker pull MyImage}}
+      
+    \item Résultat :
+      \begin{itemize}
+        \item Télécharge l’image \texttt{\textbf{MyImage}}
+        \item Rend l’image disponible localement pour créer des conteneurs.
+      \end{itemize}
+  \end{itemize}
+
+\end{frame}
+
+% -----------------
+
+\begin{frame}{Example: Alpine}
+
+L'image docker de Linux Alpine est souvent utilisée par les conteneurs.
+\begin{itemize}
+   \item Distribution très légère de Linux
+   \item \url{https://hub.docker.com/_/alpine}
+\end{itemize} 
+
+Télécharger une image alpine \\
+\texttt{\textbf{> docker pull alpine}}
+
+Démarre un conteneur en utilisant l'image alpine et démarre une invite de commande sh interactive dans celui-ci
+ \\
+\texttt{\textbf{> docker run -it alpine /bin/sh}}
+
+Une fois démarrer, on peut intéragir avec le système de fichier:
+ \\
+\texttt{\textbf{\alert{in alpine} > ls -al}}
+
+Mais il n'y a pas de kernel:
+ \\
+\texttt{\textbf{\alert{in alpine} > ls /boot}}
+
+\end{frame}
+% -----------------
+
+\begin{frame}{D'une image vers un conteneur}
+
+Comme vu précédemment, une image est une archive d'un système de fichiers. Créer un conteneur consiste à:
+\begin{itemize}
+    \item Donner une \alert{quantité limité de ressources} au conteneur
+    \item Créer un environnement isolé au processus du conteneur
+    \item assigner la racine du système de fichiers de l'image à la \alert{la racine du système de fichiers du conteneur}
+\end{itemize}
+
+\end{frame}
+
+% -----------------
+
+\begin{frame}{D'une image vers un conteneur}
+
+
+\begin{block}{\texttt{\textbf{cgroups}}}
+Linux Control Groups (\texttt{\textbf{cgroups}}) limite la quantité de ressource qu'un processus peut utiliser (CPU, mémoire, latence, etc).
+\end{block}
+
+\begin{block}{\texttt{\textbf{namespaces}}}
+Linux Namespaces assure que chaque processus voit sa propre vue personnelle du système (fichiers, processus, interfaces réseaux, hostname, etc).
+\end{block}
+
+\begin{block}{\texttt{\textbf{chroot, pivot_root}}}
+Change la racine du système de fichiers d'un processus.   
+\end{block}
+
+\end{frame}
+
+% -----------------
+\section{Docker}
+% -----------------
+
+\begin{frame}{Vue d'ensemble de Docker}
+
+Les différents éléments de Docker
+
+\begin{itemize}
+    \item CLI (Command Line Interface)
+    \item Docker runtime
+    \item Les images et le registre
+    \item Les conteneurs
+\end{itemize}
+
+\begin{alertblock}{Les rôles du Docker runtime}
+    \begin{itemize}
+    \item Démarrer (\emph{start}) et arrêter (\emph{stop}) des conteneurs 
+    \item Manager des images
+    \item Manager les réseaux
+    \item Manager les volumes
+    \item etc.
+\end{itemize}
+\end{alertblock}
+
+\end{frame}
+
+% -----------------
+
+\begin{frame}{Vue d'ensemble de Docker}
+
+\input{figures/overview_docker}
+
+\end{frame}
+
+% -----------------
+
+\begin{frame}{Structure d'une image Docker}
+
+Une image Docker est construite en assemblant différentes \alert{couches}.
+
+\begin{columns}[T,onlytextwidth]
+    \begin{column}{.5\linewidth}
+    \begin{center}
+        \input{figures/image_docker}
+    \end{center}
+    \end{column}
+    \begin{column}{.5\linewidth}
+    \vspace{1.5cm}
+    \alert{Optimisation de stockage}
+    \begin{itemize}
+        \item Les couches sont partagées par différentes images pour optimiser le stockage;
+        \item Pour se faire, chaque couche est identifiée par une fonction de hashage.
+    \end{itemize}
+    \end{column}
+\end{columns}
+
+\end{frame}
+
+% -----------------
+
+\begin{frame}{Écrire dans un conteneur ?}
+
+\begin{columns}[T,onlytextwidth]
+    \begin{column}{.5\linewidth}
+    Une image Docker est \alert{immuable}! C'est à dire qu'elle ne peut pas être modifiée.\\
+    Au runtime, une couche virtuelle est créée dans le conteneur, au dessus de l'image
+    \begin{itemize}
+        \item Il est possible d'écrire dans cette couche;
+        \item Cette couche n'est pas partagée par les autres conteneurs;
+        \item Cette couche est détruite avec le conteneur.
+    \end{itemize}
+    
+    \begin{alertblock}{Volumes}
+        Si les données doivent être \alert{persistantes et partagées} entre les conteneurs, un \alert{volume} doit être utilisé. Voir \url{https://docs.docker.com/engine/storage/volumes/}
+    \end{alertblock}
+        
+    \end{column}
+    \begin{column}{.5\linewidth}
+    \begin{center}
+        \input{figures/image_docker_writing}
+    \end{center}
+    \end{column}
+\end{columns}
+
+\end{frame}
+
+% -----------------
+
+\section{Créer une image avec un Dockerfile}
+
+% -----------------
+
+\begin{frame}{Principes du Dockerfile}
+
+Un \emph{Dockerfile} contient un ensemble de commandes pour créer une image Docker.
+\begin{itemize}
+    \item Empêche de construire des images manuellement, ``from scratch'';
+    \item Offre une manière pour Docker de construire des couches et empêcher les commandes inutiles;
+    \item Un Dockerfile ressemble à un fichier bash avec des instructions à appliquer.
+\end{itemize}
+
+\end{frame}
+
+% -----------------
+
+\begin{frame}{Exemple de Dockerfile}
+
+\begin{columns}[T,onlytextwidth]
+    \begin{column}{.5\linewidth}
+
+    \begin{itemize}
+        \item \texttt{\textbf{FROM}} pour indiquer quelle image de base utiliser pour construire notre image;
+        \item \texttt{\textbf{RUN}} pour exécuter une commande par dessus l'image de base; 
+        \item \texttt{\textbf{ENV}} pour déclarer des variables d'environnement;
+        \item \texttt{\textbf{ENTRYPOINT}} pour définir quelle commande doit être exécutées au démarrage du conteneur.
+    \end{itemize}
+        
+    \end{column}
+    \begin{column}{.5\linewidth}
+        \begin{center}
+            \includegraphics[scale=0.45]{images/docker_simple.png}
+        \end{center}
+    \end{column}
+\end{columns}
+
+La documentation complète est accessible ici: \url{https://docs.docker.com/reference/dockerfile/}
+
+\end{frame}
+
+% -----------------
+
+
+\begin{frame}{Exemple de Dockerfile}
+
+\begin{columns}[T,onlytextwidth]
+    \begin{column}{.45\linewidth}
+
+    \begin{itemize}
+        \item \texttt{\textbf{FROM}} avec une version d'image;
+        \item \texttt{\textbf{WORKDIR}} pour indiquer le dossier de travail dans lequel se placer quand le conteneur démarrera; 
+        \item \texttt{\textbf{ADD}} pour ajouter des fichiers depuis la machine locale (i.e., hôte) à l'image du conteneur;
+        \item \texttt{\textbf{CMD}} pour définir quelles commandes doivent être exécutées au démarrage du conteneur.
+    \end{itemize}
+        
+    \end{column}
+    \begin{column}{.5\linewidth}
+        \begin{center}
+            \includegraphics[scale=0.4]{images/docker_simple2.png}
+        \end{center}
+    \end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Quelques subtilités des commandes Dockerfile}
+\begin{itemize}
+    \item \texttt{\textbf{ADD}} $\neq$ \texttt{\textbf{COPY}}: \texttt{\textbf{ADD}} fait la même chose que \texttt{\textbf{COPY}} mais permet aussi de décompresser automatiquement des archives locales, et télécharger une ressource depuis une URL
+    
+    \vspace{1cm}
+    
+    \item \texttt{\textbf{ENTRYPOINT}} $\neq$ \texttt{\textbf{CMD}}: \texttt{\textbf{ENTRYPOINT}} sert à démarrer un programme principal fixe (e.g., python, java) alors que \texttt{\textbf{CMD}} sert à remplacer les argumments passé après \texttt{\textbf{docker run image}} (e.g., \texttt{\textbf{/bin/sh}} dans le premier exemple)
+\end{itemize}
+
+\end{frame}
+
+% -----------------
+
+\begin{frame}{Construire une image à partir d'un Dockerfile}
+
+\begin{block}{Commande}
+\texttt{\textbf{docker build [OPTIONS] PATH}}
+\end{block}
+
+\texttt{\textbf{> docker build . -t ”monapp:latest”}}
+\begin{itemize}
+    \item \texttt{\textbf{docker build}} est la commande pour construire une image Docker;
+    \item \texttt{\textbf{.}} est le chemin vers le Dockerfile;
+    \item \texttt{\textbf{-t}} est une option pour nommer cette image (ici \texttt{\textbf{”monapp:latest”}} se réfère à un nom et une version);
+    \item Par défaut, le Dockerfile est \texttt{\textbf{PATH/Dockerfile}}, mais vous pouvez donner un autre nom en utilisant l'option \texttt{\textbf{-f}}.
+\end{itemize}
+
+\end{frame}
+
+% -----------------
+
+\begin{frame}{Docker CLI}
+
+\texttt{\textbf{> docker -h}} donne l'aide racine de la CLI\\
+\texttt{\textbf{> docker images -h}} donne l'aide pour les images\\
+
+\texttt{\textbf{> docker pull hello-world}} télécharge l'image \texttt{\textbf{hello-world}}\\
+\texttt{\textbf{> docker images}}, ou \texttt{\textbf{ docker images ls}}, donne une liste des images téléchargées\\
+\texttt{\textbf{> docker image inspect id}} donne des détail sur l'image correspondante à l'\texttt{\textbf{id}}\\
+
+\texttt{\textbf{> docker run hello-world}} créer et démarre un conteneur à partir d'une image\\
+\texttt{\textbf{> docker ps}} affiche les conteneurs en cours d'exécution\\
+\texttt{\textbf{> docker ps -a}} affiche tous les conteneurs, y compris ceux aux statut \texttt{\textbf{exited}}\\
+\texttt{\textbf{> docker container inspect id}} donne des détail sur le conteneur correspondant à l'\texttt{\textbf{id}}\\
+
+\texttt{\textbf{> docker container prune}} supprime tous les conteneurs qui ne sont plus utilisés\\
+\texttt{\textbf{> docker image rm hello-world}} supprime l'image locale \texttt{\textbf{hello-world}}
+\end{frame}
+
+
+% -----------------
+\section{Quelques bonnes pratiques}
+% -----------------
+
+\begin{frame}{Penser aux couches}
+
+Dans les versions plus anciennes de Docker, chaque ligne dans le Dockerfile créait une couche. En conséquences:
+\begin{itemize}
+    \item Trop de couches intermédiaires, pouvant être coûteuses;
+    \item Le temps de build pouvait être impacté;
+    \item Les optimisations de stockage pouvaient être impossibles;
+    \item Aujourd'hui, \texttt{\textbf{RUN}}, \texttt{\textbf{COPY}} et \texttt{\textbf{ADD}} uniquement créent de nouvelles couches.
+\end{itemize}
+
+\begin{alertblock}{Bonne pratique 1}
+Pensez à vos couches quand vous utiliser \texttt{\textbf{RUN}}, \texttt{\textbf{COPY}} et \texttt{\textbf{ADD}} dans votre Dockerfile
+\end{alertblock}
+
+\end{frame}
+
+% -----------------
+
+\begin{frame}{Réduire la taille d'une image}
+
+\begin{alertblock}{Bonne pratique 2}
+N'installez uniquement que les dépendances nécessaires dans votre Dockerfile
+\end{alertblock}
+
+\begin{itemize}
+    \item Si vous utilisez \texttt{\textbf{apt}} pour installer des packages, utilisez l'option \texttt{\textbf{--no-install-recommends}}
+    \item Si possible, supprimez les fichiers intermediaires non requis quand vous appliquez \texttt{\textbf{RUN}}
+\end{itemize}
+
+\end{frame}
+
+% -----------------
+
+\begin{frame}{Construction en plusieurs étapes}
+
+\begin{alertblock}{Bonne pratique 3}
+\begin{itemize}
+    \item Réduisez la taille des images en supprimant les dépendances de compilation dans l'image finale.
+    \item L'image finale contient uniquement les dépendances nécessaires à l'exécution du service.
+    \item Une image de base bien adaptée aux fichiers exécutables uniquement est \texttt{\textbf{scratch}} ou \texttt{\textbf{alpine}}.
+\end{itemize}
+\end{alertblock}
+
+
+\begin{center}
+    \includegraphics[scale=0.25]{images/dockerfile.png}
+\end{center}
+
+\end{frame}
+
+% -----------------
+
+\begin{frame}{Sécurité}
+\alert{N'importe qui peut déposer une image Docker sur Docker Hub !}
+
+\begin{alertblock}{Bonne pratique 4}
+\begin{itemize}
+    \item Préférez toujours les images Docker officielles.
+    \item Vérifiez que l'image Docker est régulièrement mise à jour.
+    \item Soyez sur que l'image contient ce que vous pensez en utilisant 
+    \begin{itemize}
+        \item \texttt{\textbf{> docker history image\_name}}
+        \item des outils comme \texttt{\textbf{\color{blue} dive}}
+    \end{itemize}
+    \item Soyez sure de mettre à jour les images que vous utilisez.
+\end{itemize}
+\end{alertblock}
+
+\end{frame}
+
+% -----------------
+
+\begin{frame}{Un peu plus dans les Dockerfiles}
+
+\begin{itemize}
+    \item Exposer ses ports dans un Dockerfile
+        \begin{itemize}
+            \item \texttt{\textbf{EXPOSE 80}} pour exposer un numéro de port
+            \item \texttt{\textbf{EXPOSE 56/udp}} pour exposer un numéro de port pour un protocole précis
+        \end{itemize}
+    \vspace{0.2cm}
+    \item Ajouter des données purement informatives
+        \begin{itemize}
+            \item \texttt{\textbf{LABEL maintainer=”Jolan PHILIPPE”}}
+        \end{itemize}
+    \vspace{0.2cm}
+    \item Ajouter des variables d’environnement
+        \begin{itemize}
+            \item \texttt{\textbf{ENV ADMIN\_USER=”Alice”}}
+            \item ou directement via la CLI: \texttt{\textbf{docker run -e ADMIN\_USER=”Bob”}}
+        \end{itemize}
+    \vspace{0.2cm}
+    \item Ajouter des volumes depuis l'hôte
+        \begin{itemize}
+            \item \texttt{\textbf{VOLUME /myapp/data}}
+        \end{itemize}
+\end{itemize}
+
+
+\end{frame}
+
+% -----------------
+\section{Déployer une pile logicielle avec Docker Compose }
+% -----------------
+
+\begin{frame}{Automatiser le déploiement d'applications dans des conteneurs}
+
+\begin{center}
+\includegraphics[scale=0.15]{images/docker-compose.png}
+\end{center}
+
+\begin{itemize}
+    \item Déploie facilement une pile logicielle conteneurisée
+    \item Défini votre déploiement avec un seul fichier YAML (conteneurs, volumes, réseaux, etc.)
+    \item Les fichiers de déploiement deviennent faciles à partager, à contrôler leurs versions, etc. (c'est de l'IaC :wink:)
+\end{itemize}
+
+\end{frame}
+
+% -----------------
+
+\begin{frame}{Structure de \texttt{compose.yaml}}
+
+\begin{columns}[T,onlytextwidth]
+    \begin{column}{.48\linewidth}
+    Spécification complète: \url{https://docs.docker.com/reference/compose-file/}
+    \begin{itemize}
+        \item \emph{\textbf{services}} 
+        \begin{itemize}
+            \item Nom du service
+            \begin{itemize}
+                \item \emph{\textbf{image}} Docker ou chemin de \emph{\textbf{build}} pour le Dockerfile
+                \item \emph{\textbf{ports}} exposés par le service
+                \item \emph{\textbf{networks}} utilisés par le service
+                \item \emph{\textbf{volumes}} utilisés par le service
+                \item variables d'\emph{\textbf{environment}} utilisés par le service avec sa valeur
+                \item \emph{\textbf{depends\_on}} un autre service
+            \end{itemize}
+        \end{itemize}
+        \item \emph{\textbf{volumes}} 
+        \item \emph{\textbf{networks}} 
+    \end{itemize}
+    \end{column}
+    \begin{column}{.5\linewidth}
+        \vspace{-0.4cm}
+        \begin{center}
+            \includegraphics[scale=0.25]{images/docker_compose_code.png}
+        \end{center}
+    \end{column}
+\end{columns}
+
+Il est très important de comprendre que \texttt{\textbf{Docker compose}} crée un DNS pour que les conteneurs puissent s'appeler les uns les autres sans connaître leurs adresses IP.
+
+\end{frame}
+
+% -----------------
+
+\begin{frame}{CLI}
+
+Quelques commandes importantes :
+\begin{itemize}
+    \item \texttt{\textbf{> docker-compose build}} pour construire, ou reconstruire, des images
+    \item \texttt{\textbf{> docker-compose up}} pour créer et démarrer des conteneurs, réseaux, etc.
+    \item \texttt{\textbf{> docker-compose stop}} pour arrêter des conteneurs, réseaux, etc.
+    \item \texttt{\textbf{> docker-compose down}} pour arrêter et supprimer des conteneurs, réseaux, etc.
+\end{itemize}
+        
+Toute la documentation : \url{https://docs.docker.com/compose/reference/}
+
+Quelques exemples : \url{https://github.com/docker/awesome-compose}
+
+\end{frame}
+
+% -----------------
+
+\end{document}

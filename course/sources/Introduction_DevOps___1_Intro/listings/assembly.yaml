@@ -1,0 +1,17 @@
+components:
+  mdbmaster:
+    type: 'MariaDB_master'
+  facts:
+    type: 'Facts'
+  common:
+    type: 'Common'
+  haproxy:
+    type: 'HAProxy'
+  ...
+
+connections:
+  - facts,service,common,facts_service
+  - facts,service,haproxy,facts_service
+  - ...
+  ${{ each site in range(0,sites) }}:
+    - mdbmaster,service,mdbworker${{ site }},master_service

@@ -1,0 +1,9 @@
+\begin{tikzpicture}
+
+    \node[] (n) {Notation : };
+    % \node[step] (commit) {Commit Code};
+    \node[draw, rectangle, left=0cm of n, minimum width=2cm, minimum height=0.8cm] (s1) {Service 1 }; 
+    \node[draw, rectangle, minimum width=2cm, minimum height=0.8cm, right=1cm of s1] (s2) {Service 2}; 
+    \simpleprovideuse{s1}{s2}
+    \node[below=0cm of s1] (t) {aaaaaaaa}; 
+\end{tikzpicture}
