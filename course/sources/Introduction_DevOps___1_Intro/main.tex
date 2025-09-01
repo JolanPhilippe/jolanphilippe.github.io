@@ -162,11 +162,11 @@ Plus de détails sur
       \centering
       % Schéma pipeline CI (simple)
       \begin{tikzpicture}[node distance=6mm,>=stealth,thick]
-        \tikzstyle{step}=[rectangle,rounded corners,draw,align=center,minimum width=2.6cm,minimum height=0.9cm]
-        \node[step] (code) {Commit\\Code};
-        \node[step,below=of code] (build) {Build};
-        \node[step,below=of build] (tests) {Tests\\(unit., int., lint)};
-        \node[step,below=of tests,fill=green!20] (ok) {OK = Merge};
+        \tikzstyle{stpp}=[rectangle,rounded corners,draw,align=center,minimum width=2.6cm,minimum height=0.9cm]
+        \node[stpp] (code) {Commit\\Code};
+        \node[stpp,below=of code] (build) {Build};
+        \node[stpp,below=of build] (tests) {Tests\\(unit., int., lint)};
+        \node[stpp,below=of tests,fill=green!20] (ok) {OK = Merge};
         \draw[->] (code) -- (build);
         \draw[->] (build) -- (tests);
         \draw[->] (tests) -- node[right]{\scriptsize pass} (ok);

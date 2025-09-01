@@ -1,0 +1,82 @@
+\begin{tikzpicture}
+
+    % \node[](){};
+
+
+    \node[draw, rectangle, minimum height=0.6cm, fill=blizzardblue, opacity=0.3, minimum width=3.5cm](main){};
+    \node[draw, rectangle, minimum height=0.6cm, minimum width=3.5cm](main){\texttt{main.tf}};
+    \node[draw, rectangle, minimum height=0.6cm, fill=blizzardblue, opacity=0.3, minimum width=3.5cm, below=0.3cm of main](tfstate){};
+    \node[draw, rectangle, minimum height=0.6cm, minimum width=3.5cm, below=0.3cm of main](tfstate){\texttt{terraform.tfstate}};
+    \node[above=0.3cm of main](files){Fichiers};
+    \node[draw, rectangle, fit=(tfstate)(files)](boxfiles){};
+
+    \node[draw, rectangle, below=1cm of boxfiles, minimum width=2.5cm, minimum height=0.8cm, fill=bubblegum, opacity=0.3](infra){};
+    \node[draw, rectangle, below=1cm of boxfiles, minimum width=2.5cm, minimum height=0.8cm](infra){Infrastructure};
+
+
+    \node[draw, rectangle, rounded corners=8, right=1.5cm of boxfiles, yshift=-0.4cm, fill=celadon, opacity=0.3, minimum width=1.1cm, minimum height=0.8cm](plan){};
+    \node[draw, rectangle, rounded corners=8, right=1.5cm of boxfiles, yshift=-0.4cm, minimum width=1.1cm, minimum height=0.8cm](plan){\large plan};
+    \node[draw, rectangle, rounded corners=8, below=0.5cm of plan, fill=celadon, opacity=0.3, minimum width=1.1cm, minimum height=0.8cm](apply){};
+    \node[draw, rectangle, rounded corners=8, below=0.5cm of plan, minimum width=1.1cm, minimum height=0.8cm](apply){\large apply};
+
+    \node[draw, rectangle, rounded corners=7, right=1.3cm of plan](bucket){
+    \begin{tabular}{>{\centering\arraybackslash}p{2.6cm}}
+        \hline \scriptsize
+        \textbf{Provider}\\\textbf{bucket GCP} \\ \hline
+        \raggedright
+         \scriptsize$\bullet$ Schéma ressource\\
+         \scriptsize$\bullet$ CRUD\\
+         \scriptsize$\bullet$ Divers paramètres \\
+    \end{tabular}
+    };
+    \node[draw, rectangle, rounded corners=7, below=0.2cm of bucket](instance){
+    \begin{tabular}{>{\centering\arraybackslash}p{2.6cm}}
+        \hline
+         \scriptsize\textbf{Provider}\\\textbf{instance AWS} \\ \hline
+        \raggedright
+         \scriptsize$\bullet$ ...
+    \end{tabular}
+    };
+    \node[above=0.2cm of bucket](providers){Providers};
+
+    \node[draw, rectangle, shape border rotate=90, aspect=0.1,
+        fit=(instance)(providers)](providersbox){};
+
+    \node[draw, rectangle, minimum width=2cm, yshift=0.78cm, right=1cm of providersbox](apiaws){APIs AWS};
+    \node[minimum width=2cm, above=0.2cm of apiaws](apis){APIs};
+    \node[draw, rectangle, minimum width=2cm, below=0.3cm of apiaws](apigcp){API GCP};
+    \node[draw, rectangle, minimum width=2cm, below=0.3cm of apigcp](apiazure){APIs Azure};
+    \node[minimum width=2cm, below=0.3cm of apiazure](api){...};
+
+    \node[draw, cylinder, shape border rotate=90, aspect=0.1,
+        fit=(apis)(api)](apisbox){};
+
+    \draw[-, line width=1.2, bend left=50] (boxfiles.north east) to (bucket.west);
+    \draw[->, line width=1.2, bend left=65] (bucket.west) to  (plan.east);
+    \draw[-, blizzardblue, line width=1.2, bend left=50] (boxfiles.north east) to (bucket.west);
+    \draw[->, blizzardblue, line width=1.2, bend left=65] (bucket.west) to  (plan.east);
+    \draw[->, line width=1.2, bend left=25] (boxfiles) to node[above](){diff} (plan);
+    \draw[->, blizzardblue, line width=1.2, bend left=25] (boxfiles) to (plan);
+    \draw[->, line width=1.2] (plan) to (apply);
+
+    \draw[{Stealth[scale=0.9]}-{Stealth[scale=0.9]}, double distance=1.5pt, line width=1] (providersbox) to (apisbox);
+
+
+    \draw[-, line width=1.2, bend left=55] (apply.east) to (bucket.south west);
+    \draw[-, line width=1.2, bend left=55, bubblegum] (apply.east) to (bucket.south west);
+
+    \draw[->, line width=1.2, bend left=55] (bucket.south west) to (infra);
+    \draw[->, line width=1.2, bend left=55, bubblegum] (bucket.south west) to (infra);
+
+    \draw[->, line width=1.2, bend left=35] (apisbox.south) to (infra.south);
+    \draw[->, line width=1.2, bend left=35, bubblegum] (apisbox.south) to (infra.south);
+    \draw[->, line width=1.2, bend left=35, bubblegum] (apisbox.south) to (infra.south);
+
+    \node[draw, cylinder, shape border rotate=90, aspect=0.1,
+    above=0.3cm of apisbox, minimum width=2.3cm](registrybox){Registry};
+
+    \draw[->,line width=1.2, bend right=35] (registrybox.west) to node[](LL) {} (providersbox.north);
+
+    \node[draw, rectangle, rounded corners=8, fill=celadon, opacity=0.3, minimum width=1.1cm, left=-0.8cm of LL, yshift=0.25cm](init){\large init};
+    \node[draw, rectangle, rounded corners=8, minimum width=1.1cm, left=-0.8cm of LL, yshift=0.25cm](init){\large init};
+\end{tikzpicture}

@@ -1,0 +1,56 @@
+\ProvidesPackage{hcl-listing}[Custom TF language for listings]
+
+% Package: hcl-listing.sty
+% Author: Jolan PHILIPPE
+% Version: 1.0
+% Date: 2025/02/05
+% Description: Custom LaTeX package for syntax highlighting of HCL (HashiCorp Configuration Language
+
+\RequirePackage{listings}
+\RequirePackage{xcolor}
+
+\definecolor{dkgreen}{rgb}{0.0, 0.42, 0.24}
+\definecolor{ForestGreen}{rgb}{0.13, 0.55, 0.13}
+\definecolor{CornflowerBlue}{rgb}{0.39, 0.58, 0.93}
+
+
+% Define the HCL language for listings
+\lstdefinelanguage{HCL}{
+    basicstyle=\ttfamily,
+    tabsize=2,
+    % numbers=right,
+    % numbersep=2pt,
+    % numberstyle=\tiny\color{gray},
+    backgroundcolor=\color{white},
+    stepnumber=1,
+    showstringspaces=false,
+    breaklines=true, 
+    %frame=single,
+    % framerule=0.5pt, 
+    % framesep=5pt,
+    % frame=lines,
+    rulecolor=\color{gray},
+    % xleftmargin=20pt,
+    % Block keywords
+    keywords={resource, provider, variable, output, module, data, terraform, locals, check, import},
+    keywordstyle=\color{red}\bfseries,                 
+    % Boolean and null
+    keywords=[2]{true, false, null},                    
+    keywordstyle=[2]\color{magenta}\bfseries,
+    % Special attributes
+    keywords=[3]{count, for_each, depends_on, lifecycle, provisioner, connection},
+    keywordstyle=[3]\color{teal}\bfseries,
+    % resource keywords
+    keywords=[4]{name, machine_type, boot_disk, initialize_params, image, credentials, labels, my_label, network_interface, network, allow_stopping_for_update, google_storage_bucket, default, description, bucket_name, ., enable_cdn, location, storage_class, website, main_page_suffix, not_found_page, bucket, content, source, version},
+    keywordstyle=[4]\color{CornflowerBlue}\bfseries,               
+    % Additional language features
+    sensitive=true,
+    morecomment=[l]{\#},                                  % Line comments with #
+    morecomment=[s]{\/*}{*\/},                            % Block comments with /* */
+    commentstyle=\color{gray}\itshape,                 % Comments (dkgreen)
+    morestring=[b]",                                      % Strings in double quotes
+    morestring=[d]',                                      % Strings in single quotes
+    stringstyle=\color{ForestGreen},                              % Strings (red)
+}
+
+\endinput

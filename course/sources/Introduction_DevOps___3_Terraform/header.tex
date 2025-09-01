@@ -1,5 +1,7 @@
+\usepackage[T1]{fontenc} 
 \usepackage{graphicx}
 %\usepackage{cite}
+\usepackage{soul}
 \usepackage{subcaption}
 \usepackage{lmodern}
 \usepackage{hyperref}
@@ -22,9 +24,13 @@
 \usetikzlibrary{shadows.blur}
 \usetikzlibrary{decorations.pathreplacing, fit}
 \usetikzlibrary{shapes,arrows}
+\usetikzlibrary{shapes.symbols}
 \usepackage{flushend}
 \usepackage{ifthen}
 \newboolean{showtodos}
+
+
+\usepackage{terraform}
 
 % ----------------------------------------
 % COLORS
@@ -35,6 +41,8 @@
 \definecolor{mauve}{rgb}{0.58,0,0.82}
 \definecolor{auburn}{rgb}{0.43, 0.21, 0.1}
 \definecolor{babyblue}{rgb}{0.54, 0.81, 0.94}
+\definecolor{apricot}{rgb}{0.98, 0.81, 0.69}
+\definecolor{celadon}{rgb}{0.67, 0.88, 0.69}
 \definecolor{amaranth}{rgb}{0.9, 0.17, 0.31}
 \definecolor{bleudefrance}{rgb}{0.19, 0.55, 0.93}
 \definecolor{atomictangerine}{rgb}{1.0, 0.6, 0.4}
@@ -45,6 +53,9 @@
 \definecolor{dkblue}{rgb}{0.2, 0.2, 0.6}
 \definecolor{dkred}{rgb}{0.8, 0.0, 0.0}
 \definecolor{byzantine}{rgb}{0.74, 0.2, 0.64}
+\definecolor{brightlavender}{rgb}{0.75, 0.58, 0.89}
+\definecolor{blizzardblue}{rgb}{0.67, 0.9, 0.93}
+\definecolor{bubblegum}{rgb}{1.0, 0.6, 0.6}
 % ----------------------------------------
 
 
@@ -295,6 +306,9 @@ basicstyle=\footnotesize,
      commentstyle=\color{black},
      morecomment=[l]{-}
  }
+
+\usepackage{pifont,utfsym}
+
 
 
 % \usetikzlibrary{positioning, arrows.meta, decorations.pathreplacing, fit}

@@ -304,11 +304,6 @@ basicstyle=\footnotesize,
  }
 
 \usepackage{pifont,utfsym}
-\newcommand{\cmark}{\ding{51}}
-\newcommand{\xmark}{\ding{55}}
-\newcommand{\OKmark}{{\color{green}\cmark}}
-\newcommand{\KOmark}{{\color{red}\xmark}}
-
 
 
 % \usetikzlibrary{positioning, arrows.meta, decorations.pathreplacing, fit}
@@ -435,7 +430,7 @@ basicstyle=\footnotesize,
 \newcommand{\okmark}{\textbf{\color{green}\faCheck}}
 \newcommand{\komark}{\textbf{\color{red}\faTimes}}
 \newcommand{\midmark}{\textbf{\color{orange}$\sim$}}
-\renewcommand{\OKmark}{\okmark~}
+\newcommand{\OKmark}{\okmark~}
 \newcommand{\OKOKmark}{\okmark\okmark~}
-\renewcommand{\KOmark}{\komark~}
+\newcommand{\KOmark}{\komark~}
 \newcommand{\MIDmark}{\midmark~}

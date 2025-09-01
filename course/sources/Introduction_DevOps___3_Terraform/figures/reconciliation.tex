@@ -1,0 +1,54 @@
+\begin{tikzpicture}[auto, node distance=1cm, scale=0.5]
+
+% DevOps fig + txt
+\node[yshift=0.5cm] (ldevops) {\LARGE \faMale};
+\node[left=-0.1cm of ldevops] (rdevops) {\LARGE \faFemale};
+\node[fit=(ldevops) (rdevops), inner sep=1pt] (sdevops) {};
+\node[below=0 of sdevops] (devops) {DevOps};
+\node[fit=(sdevops) (devops), inner sep=1pt] (blockdevops) {};
+
+% Conflang
+\node[draw, rectangle, rounded corners=5pt, right=1.3cm of blockdevops] (conflang) {\begin{tabular}{c}Language de\\configuration (HCL)\end{tabular}};
+\node[above=-0.25cm of conflang, xshift=18pt](midconflang){};
+
+% Target and current infra
+\node[draw, rectangle, right=1.5cm of conflang, minimum height=1.4cm] (targetinfra) {\begin{tabular}{c}
+Infrastructure\\Ciblée\end{tabular}};
+\node[draw, rectangle, right=0.5cm of targetinfra, minimum height=1.4cm] (currentinfra) {\begin{tabular}{c}
+Infrastructure\\Courante
+\end{tabular}};
+\node[fit=(targetinfra) (currentinfra), inner sep=1pt] (blockinfra) {};
+
+% Ressources
+
+% Reconciliation
+\node[draw, rectangle, rounded corners=10pt, below=0.8cm of blockinfra] (reconciliation){\begin{tabular}{l}
+Réconciliation d'état \\ 
+$\bullet$ Différence \\ 
+$\bullet$ Planifie la reconf. \\ 
+$\bullet$ Exécute
+\end{tabular}};
+
+% New infra
+\node[draw, rectangle, left=1.3cm of reconciliation, minimum height=0.7cm, minimum width=2cm] (newinfra) {\begin{tabular}{c}
+Nouvelle\\Infrastructure
+\end{tabular}};
+
+
+% Arrows
+\draw[-{Stealth[length=2mm]}, thick, line width=0.4mm] (blockdevops) -- node {utilise} (conflang);
+\draw[-{Stealth[length=2mm]}, thick, line width=0.4mm] (conflang) -- node [above] {décrit} (targetinfra);
+
+% \draw[-{Stealth[length=2mm]}, thick, line width=0.4mm] (conflang.north) -- node [below] {dirige, modifie} (currentinfra.north);
+
+% \draw[-{Stealth[length=2mm]}, thick, line width=0.4mm]
+%   (conflang.north) -- ++(0,0.7)
+%   -- node[above] {dirige, modifie} ++(14.5,0)
+%   -- (currentinfra.north);
+
+
+\draw[-{Stealth[length=2mm]}, thick, line width=0.4mm](targetinfra)-- node [xshift=0.4cm, yshift=-0.3cm] {input} (reconciliation);
+\draw[-{Stealth[length=2mm]}, thick, line width=0.4mm](currentinfra)-- (reconciliation);
+\draw[-{Stealth[length=2mm]}, thick, line width=0.4mm](reconciliation)-- node {output} (newinfra);
+
+\end{tikzpicture}

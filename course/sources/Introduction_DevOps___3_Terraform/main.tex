@@ -1,0 +1,596 @@
+\documentclass[aspectratio=169,10pt]{beamer}
+
+\usetheme[block=fill,progressbar=foot,background=light]{metropolis}   
+\setbeamercolor{background canvas}{bg=white}
+\usepackage{appendixnumberbeamer}
+
+\title{Introduction au DevOps}
+\subtitle{Terraform}
+\date{12 Septembre 2025}
+\author{Jolan PHILIPPE}
+\institute{Université d'Orléans}
+
+\input{header}
+
+\begin{document}
+
+\begin{frame}
+    \titlepage 
+\end{frame}
+% -----------------
+
+\begin{frame}{Les rôles des outils d'IaC}
+
+\hspace*{-0.7cm}
+\input{figures/steps_iac}
+
+\end{frame}
+
+% -----------------
+\section{Une infrastructure, c'est quoi ?}
+% -----------------
+
+\begin{frame}{Définitions}
+
+\begin{alertblock}{Infrastructure}
+L'infrastructure fait référence au logiciel, à la plate-forme ou au matériel qui fournit ou déploie des applications. \textit{Source: Infrastructure-as-code, patterns and practices}
+\end{alertblock}
+
+\begin{alertblock}{Infrastructure as a Service (IaaS)}
+L’IaaS (infrastructure as a service) est un service de cloud computing offrant des ressources informatiques matérielles (stockage, réseau, baies de serveurs). \textit{Source: CNIL}
+\end{alertblock}
+    
+\end{frame}
+
+% -----------------
+
+\begin{frame}{Dans le Cloud: Infrastructure $\Rightarrow$ APIs}
+
+Dans un contexte de IaaS, le paradigme du Cloud computing a transformé l'\alert{infrastructure en APIs externes} (e.g., REST) sur lesquelles on peut envoyer des requêtes.
+
+Aujourd'hui, dans le Cloud, les infrastructures sont comme n'importe quel logiciel offrant des services.
+\begin{itemize}
+    \item Une requête pour un bucket pour stocker du contenu (e.g., BDD)
+    \item Une requête pour un cluster GKE (Google Kubernetes Engine) pour acquerir des applciations micro-services
+    \item Une requête pour des machines virtuelles, sur lesquelles on installera une application ou des logiciels
+    \item etc.
+\end{itemize}
+    
+\end{frame}
+
+% -----------------
+
+\begin{frame}{Exemple}
+
+\begin{center}
+    \input{figures/example_bucket.tex}
+\end{center}
+\end{frame}
+
+% -----------------
+\begin{frame}{Provisionner une infrastructure}
+
+Les outils de provisionnement ont été fait pour rendre plus réutilisable, reproductible, flexible et sûr la gestion d'infrastructure dans le Cloud.
+
+\begin{alertblock}{Solution spécifique}
+\begin{itemize}
+    \item Heat pour OpenStack
+    \item Cloud Formation (CFN) pour Amazon Web Service (AWS)
+    \item Azure Resource Manager (ARM) pour Microsoft Azure 
+    \item GCP pour Google Cloud (déprécié, Google utilise maintenant Terraform)
+\end{itemize}
+\end{alertblock}
+
+\begin{alertblock}{Solution multi-Cloud}
+\begin{itemize}
+    \item Terraform
+    \item Pulumi
+\end{itemize}
+\end{alertblock}
+
+\end{frame}
+
+% -----------------
+\begin{frame}{Provisionner une infrastructure}
+
+\begin{alertblock}{Définition}
+Le provisionnement est l'opération de création et de gestion d'un ensemble de ressources dans une infrastructure dans un Cloud public, un data center, ou solution de monitoring hébergée.
+\end{alertblock}
+
+Concrètement, le provisionnement c'est demander des machines et des ressources.
+
+\pause
+
+\begin{alertblock}{Ressources}
+Dans le provisionnement, TOUT est une ressource. 
+\begin{itemize}
+    \item Une machine virtuelle
+    \item Un stockage (e.g., BDD, services de stockage, etc.)
+    \item Un réseau
+    \item Un secret manager
+    \item etc.
+\end{itemize}
+\end{alertblock}
+
+\end{frame}
+
+% -----------------
+\begin{frame}{Terraform}
+
+Dans ce module, nous utiliserons un outil de provisionnement: Terraform
+
+\begin{center}
+\includegraphics[scale=0.4]{images/terraform.png}
+\end{center}
+
+Terraform est un outil
+
+\begin{itemize}
+    \item \alert{Déclaratif}: l'état souhaité est décrit dans un fichier, en utilisant le langage \alert{HCL} (HashiCorp Configuration Language). 
+    \item \alert{Stateful}: l'état courant de l'infrastructure est conservé dans un fichier. 
+    \item De \alert{reconciliation}: l'état souhaité est comparé avec l'état courant pour définir quelle opérations (CRUD) doivent être réalisées. Ces actions sont ensuite exécutées. 
+    \item \alert{Conccurent}: les opérations de réconcialtion peuvent être exécutée en parallel, tant que les dépendences sont respectées. 
+\end{itemize}
+
+\end{frame}
+% -----------------
+\begin{frame}{Boucle de reconciliation}
+\input{figures/reconciliation}
+
+\end{frame}
+
+% -----------------
+\section{Terraform}
+% -----------------
+
+\begin{frame}{Vue d'ensemble de Terraform}
+
+Les différents éléments de Terraform
+
+\begin{itemize}
+    \item CLI (Command Line Interface)
+    \item Le langage déclaratif HCL (HashiCorp Configuration Language)
+    \item Les fichiers de configuration (\texttt{.tf})
+    \item Les providers
+    \item Le state (fichier d'état)
+\end{itemize}
+
+\begin{alertblock}{Les rôles de Terraform}
+    \begin{itemize}
+    \item Provisionner des ressources (VM, réseaux, bases, etc.)
+    \item Gérer le cycle de vie de l'infrastructure (create, update, delete)
+    \item Maintenir l'infrastructure en cohérence avec le code
+    \item Fournir un plan d'exécution avant application
+    \item Supporter de multiples fournisseurs cloud
+    \end{itemize}
+\end{alertblock}
+
+\end{frame}
+% -----------------
+\begin{frame}{Vue d'ensemble de Terraform}
+\input{figures/overview_terraform}
+\end{frame}
+
+% -----------------
+\begin{frame}{CLI}
+
+\begin{block}{\texttt{\textbf{terraform init}}}
+\alert{Initialise} le repertoire de travail, et \alert{télécharge} les providers.
+\end{block}
+\pause
+
+\begin{block}{\texttt{\textbf{terraform plan}}}
+Produit un \alert{plan} d'exécution pour reconcilier l'infrastructure avec le fichier de configuration (\textbf{.tf}). Le plan consiste en un ensemble de create/delete/update/replace.
+\end{block}
+\pause
+
+\begin{block}{\texttt{\textbf{terraform apply}}}
+Produit un plan et l'\alert{exécute}.
+\end{block}
+\pause
+
+\begin{block}{\texttt{\textbf{terraform destroy}}}
+\alert{Supprime} toutes les ressources.
+\end{block}
+
+\end{frame}
+
+% -----------------
+
+\begin{frame}{Ressources et Providers}
+
+\begin{alertblock}{Ressource}
+\begin{itemize}
+    \item Une ``\textbf{Resource}'' est l’élément de base dans Terraform. 
+    \item Elle représente un objet de l’infrastructure (ex: VM, base de données, VPC).
+    \item Elle est définie par :
+        \begin{itemize}
+            \item un \textbf{nom} (identifiant local dans Terraform),
+            \item un \textbf{type} (ex: \texttt{aws\_instance}, \texttt{google\_storage\_bucket}),
+            \item des \textbf{attributs/valeurs} (paramètres de configuration).
+        \end{itemize}
+\end{itemize}
+\end{alertblock}
+
+\end{frame}
+
+\begin{frame}{Ressources et Providers}
+
+\begin{alertblock}{Provider}
+\begin{itemize}
+    \item Chaque resource est implémentée dans un \textbf{Provider} (fichier binaire écrit en Go).
+    \item Le provider contient :
+        \begin{itemize}
+            \item le \textbf{schéma} des ressources (attributs requis et optionnels; ainsi que leurs types),
+            \item les opérations \textbf{CRUD} (\emph{Create, Read, Update, Delete}),
+            \item divers paramètres et règles de validation.
+        \end{itemize}
+    \item Exemple : la resource \texttt{aws\_instance} est définie dans le provider AWS.
+\end{itemize}
+\end{alertblock}
+
+\end{frame}
+
+
+\begin{frame}{Terraform}
+
+\includegraphics[scale=0.35]{figures/workflow}
+
+\end{frame}
+
+% -----------------
+\section{Ecrire une configuration en HCL}
+% -----------------
+
+\begin{frame}{HCL: un langage de configuration déclaratif}
+
+\begin{alertblock}{Définition en blocs}
+En HCL, on définie des blocs, contenants des attributs sous la forme de clé-valeur. Un bloc peut lui même contenir un bloc. On parle alors de blocs imbriqués.
+\end{alertblock}
+
+\pause
+
+\begin{alertblock}{Le bloc \lstinline[language=HCL]!terraform!}
+Définit les paramètres globaux du projet Terraform :  
+version requise, configuration du backend pour le \emph{state}, et gestion des providers.
+\end{alertblock}
+
+\pause
+
+\begin{alertblock}{Le bloc \lstinline[language=HCL]!provider!}
+Configure l'accès à un service cloud ou une API :  
+informations de connexion, région, options spécifiques au fournisseur.
+Ce bloc est nommé.
+\end{alertblock}
+
+\pause
+
+\begin{alertblock}{Le bloc \lstinline[language=HCL]!resource!}
+Décrit une ressource de l'infrastructure (VM, réseau, bucket...).  
+Contient un type, un nom et des attributs configurables.
+\end{alertblock}
+
+\end{frame}
+
+% -----------------
+
+\begin{frame}{HCL: un langage de configuration déclaratif}
+
+\begin{alertblock}{Attributs / Arguments / Champs}
+Les attributs en HCL sont définis avec le signe \alert{égal} (\alert{=}).
+
+La valeur des attributs peut être n'importe quelle expression: constante, appel de fonction, une liste, un objet, un référence, etc.
+
+\begin{itemize}
+    \item \lstinline[language=HCL]!name = "mon serveur"!
+    \item \lstinline[language=HCL]!credentials = file("./creds.json")!
+    \item \lstinline[language=HCL]!labels = \{app = "redis"\}!
+    \item \lstinline[language=HCL]!image = docker\_image.redis.name!
+    \item etc
+\end{itemize}
+
+\end{alertblock}
+
+Les définitions \alert{multiples} d'un attribut sont \alert{interdites}. On ne fait qu'une seule attribution.
+
+\end{frame}
+% -----------------
+\begin{frame}[fragile]{HCL: un langage de configuration déclaratif}
+
+\begin{columns}[T]
+  \begin{column}{0.55\textwidth}
+    \begin{lstlisting}[language=HCL, basicstyle=\ttfamily\scriptsize]
+terraform {
+    required_providers {
+        google = {
+            source  = "hashicorp/google"   
+            version = "5.6.0"
+        }
+    }
+}
+provider "google" {
+    project = "mon_projet"
+    region = "europe-west1"
+    credentials = file(var.gcp_key)
+}
+resource "google_compute_instance" "vm" {
+    name = "redis-${provider::google.project}"
+    machine_type = "e2-medium"
+    network_interface {
+        network = "default"
+    }
+}
+\end{lstlisting}
+  \end{column}
+
+  \begin{column}{0.45\textwidth}
+    \begin{block}{Bloc \lstinline[language=HCL]!terraform!}
+      \begin{itemize}
+        \item Le bloc \lstinline[language=HCL]!terraform! définit des paramètres globaux.
+        \item Ici, on indique que le provider utilisé est \texttt{google}.
+        \item Le provider est téléchargé depuis le registry \texttt{hashicorp}.
+        \item La version requise est fixée à \texttt{5.6.0}.
+      \end{itemize}
+    \end{block}
+  \end{column}
+\end{columns}
+
+\end{frame}
+% -----------------
+\begin{frame}[fragile]{HCL: un langage de configuration déclaratif}
+
+\begin{columns}[T]
+  \begin{column}{0.55\textwidth}
+    \begin{lstlisting}[language=HCL, basicstyle=\ttfamily\scriptsize]
+terraform {
+    required_providers {
+        google = {
+            source  = "hashicorp/google"   
+            version = "5.6.0"
+        }
+    }
+}
+provider "google" {
+    project = "mon_projet"
+    region = "europe-west1"
+    credentials = file(var.gcp_key)
+}
+resource "google_compute_instance" "vm" {
+    name = "redis-${provider::google.project}"
+    machine_type = "e2-medium"
+    network_interface {
+        network = "default"
+    }
+}
+\end{lstlisting}
+  \end{column}
+
+  \begin{column}{0.45\textwidth}
+    \begin{block}{Bloc \lstinline[language=HCL]!provider!}
+    \begin{itemize}
+\item \lstinline[language=HCL]!project = "mon_projet"! : identifiant du projet
+\item \lstinline[language=HCL]!region = "europe-west1"! : région utilisée pour déployer les ressources.
+\item \lstinline[language=HCL]!credentials = file(gcp_key.json)! : chemin vers la clé de service GCP
+    \end{itemize}
+    \end{block}
+  \end{column}
+\end{columns}
+
+\end{frame}
+% -----------------
+\begin{frame}[fragile]{HCL: un langage de configuration déclaratif}
+
+\begin{columns}[T]
+  \begin{column}{0.55\textwidth}
+    \begin{lstlisting}[language=HCL, basicstyle=\ttfamily\scriptsize]
+terraform {
+    required_providers {
+        google = {
+            source  = "hashicorp/google"   
+            version = "5.6.0"
+        }
+    }
+}
+provider "google" {
+    project = "mon_projet"
+    region = "europe-west1"
+    credentials = file(var.gcp_key)
+}
+resource "google_compute_instance" "vm" {
+    name = "redis-${provider::google.project}"
+    machine_type = "e2-medium"
+    network_interface {
+        network = "default"
+    }
+}
+\end{lstlisting}
+  \end{column}
+
+  \begin{column}{0.45\textwidth}
+    \begin{block}{Bloc \lstinline[language=HCL]!resource!}
+\begin{itemize}
+  \item \lstinline[language=HCL]!resource "..." "vm"! : définit une machine virtuelle avec l'id \lstinline[language=HCL]!vm!.
+  \item \lstinline[language=HCL]!name = "redis-${provider::google.project}"! : le nom de la VM sera construit à partir de \emph{redis-} suivi du nom de projet dans le provider.
+  \item \lstinline[language=HCL]!machine_type = "e2-medium"! spécifie le type de machine.
+  \item \lstinline[language=HCL]!network_interface { network = "default" }!  rattache l’instance au réseau par défaut.
+\end{itemize}
+    \end{block}
+  \end{column}
+\end{columns}
+\end{frame}
+
+
+\begin{frame}{HCL: un langage de configuration déclaratif}
+
+Quelques autres blocs
+
+\begin{alertblock}{Le bloc \lstinline[language=HCL]!data!}
+Permet de récupérer des informations existantes depuis un provider. Le contenu est en \alert{lecture-seule}.
+\end{alertblock}
+
+\begin{alertblock}{Le bloc \lstinline[language=HCL]!module!}
+Regroupe plusieurs ressources et variables dans une unité réutilisable.  
+Facilite la \alert{factorisation} et la \alert{réutilisation} du code Terraform.
+Un fichier \textbf{.tf} est lui même un module.
+\end{alertblock}
+
+\begin{alertblock}{Le bloc \lstinline[language=HCL]!check!}
+Permet de définir des conditions de validation dans la configuration.  
+Terraform échoue si la condition n’est pas respectée $\Rightarrow$ utile pour garantir des \alert{contraintes métiers}.
+\end{alertblock}
+
+\begin{alertblock}{Le bloc \lstinline[language=HCL]!import!}
+Relie une ressource réelle déjà existante dans le cloud à une ressource définie dans le code Terraform.  
+\alert{Important} : permet d’intégrer de l’infra existante sans la recréer.
+\end{alertblock}
+
+\end{frame}
+
+% -----------------
+
+\begin{frame}{HCL: un langage de configuration déclaratif}
+    
+    \begin{alertblock}{Variables}
+        Les modules peuvent avoir \alert{trois types} de variables:
+        \begin{itemize}
+            \item Inputs
+            \item Outputs
+            \item Locals
+        \end{itemize}  
+        Ces variables sont définies avec les blocs:  \lstinline[language=HCL]!variable!, \lstinline[language=HCL]!output! et  \lstinline[language=HCL]!locals!.
+    \end{alertblock}
+
+\end{frame}
+
+% -----------------
+
+\begin{frame}{HCL: un langage de configuration déclaratif}
+
+ \begin{alertblock}{Références}
+    \begin{itemize}
+        \item Les attributs d'une ressource sont référencées par le \alert{type} et le \alert{nom} de la ressource, suivi du nom de la ressource. Par exemple: \lstinline[language=HCL]!docker\_image.redis.image\_id!
+        \item Pour référencer depuis un bloc \lstinline[language=HCL]!data!, on utilise le mot clé \lstinline[language=HCL]!data!. Par exemple: \lstinline[language=HCL]!data.docker\_image.redis.image\_id!
+        \item Pour les variables de type \emph{input} et \emph{local}, on utilse les mots clés \lstinline[language=HCL]!var! et \lstinline[language=HCL]!local!. Par exemple: \\
+        \lstinline[language=HCL]!var.my\_input\_var! \\ \lstinline[language=HCL]!local.my\_local\_var!
+    \end{itemize}       
+
+    \end{alertblock}
+
+\end{frame}
+
+% -----------------
+
+\begin{frame}[fragile]{HCL: un langage de configuration déclaratif}
+
+\begin{columns}[T]
+  \begin{column}{0.43\textwidth}
+    \begin{lstlisting}[language=HCL, basicstyle=\ttfamily\scriptsize]
+terraform {
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = "5.6.0"
+    }
+  }
+}
+
+provider "google" {
+  project = "my-gcp-project-id"
+  region  = "europe-west1"
+  credentials = file(gcp_key.json)
+}
+
+data "google_compute_image" "debian" {
+  family  = "debian-11"
+  project = "debian-cloud"
+}
+
+locals {
+  prefix = "app"
+}
+\end{lstlisting}
+\end{column}
+
+\begin{column}{0.57\textwidth}
+\begin{lstlisting}[language=HCL, basicstyle=\ttfamily\scriptsize]
+resource "google_compute_instance" "redis" {
+  name = "redis-01"
+  machine_type = "e2-micro"
+  boot_disk {
+    initialize_params {
+      image = data.google_compute_image.debian.self_link
+    }
+  }
+  network_interface {
+    network = "default"
+    access_config {}
+  }
+}
+resource "google_compute_instance" "app" {
+  name = "${local.prefix}-${google_compute_instance.redis.name}"
+  machine_type = "e2-medium"
+  boot_disk {
+    initialize_params {
+      image = data.google_compute_image.debian.self_link
+    }
+  }
+  network_interface {
+    network = "default"
+    access_config {}
+  }
+}
+\end{lstlisting}
+\end{column}
+\end{columns}
+\end{frame}
+
+% -----------------
+
+% -----------------
+\section{Quelques bonnes pratiques}
+% -----------------
+
+\begin{frame}{Convention de nommage}
+
+Un code d'IaC est aussi source de documentation.
+
+\begin{alertblock}{Bonne pratique 1}
+\begin{itemize}
+    \item Donner toujours une description de la ressource au sein de son nom
+    \begin{itemize}
+        \item Environnement
+        \item Type de la ressource 
+        \item But, usage, intention
+        \item Exemple: \texttt{\textbf{dev-firewall-rule-allow-helloworld-to-database}}
+    \end{itemize}
+\end{itemize}
+\end{alertblock}
+\end{frame}
+
+% -----------------
+
+\begin{frame}{Variables et constantes}
+
+\begin{alertblock}{Bonne pratique 2}
+\begin{itemize}
+    \item De manière générale: Privilégiez les constantes plutôt que les variables
+    \item Si le changement d'une valeur affecte les dépendances de l'infrastructure ou compromets des informations sensibles, utilisez une variable
+\end{itemize}
+\end{alertblock}
+
+\end{frame}
+
+\begin{frame}{Avoid troubleshooting}
+
+\begin{alertblock}{Bonne pratique 3}
+\begin{itemize}
+    \item Bien lire et comprendre chaque déclarations et le plan avant de faire un \texttt{terraform apply}
+    \item Versionner le code Terraform, sans commit de secrets
+    \item Intégrer du CI/CD sur votre infrastructure Terraform
+    \item Stocker vos fichiers d'état (.tfstate) sur des stockages distants avec des mecanismes de lock
+\end{itemize}
+\end{alertblock}
+
+\end{frame}
+
+\end{document}
