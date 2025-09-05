@@ -1,0 +1,145 @@
+ \usepackage[utf8]{inputenc}
+    \usepackage[T1]{fontenc}
+    \usepackage{lmodern}
+    \usepackage{textcomp}
+    \usepackage{geometry}
+    \usepackage{lastpage}
+    \usepackage{theorem}
+    \usepackage{mathrsfs, amsfonts,amsmath,amssymb}
+    \renewcommand{\geq}{\geqslant}
+    \renewcommand{\leq}{\leqslant}
+    \usepackage{fancyhdr}
+    \usepackage{afterpage}
+    \usepackage{graphicx}
+    \usepackage{ifthen}
+    \usepackage{calc}
+    \usepackage{tabularx}
+    \usepackage{units} % \units[1]{cm}
+    \usepackage[french]{babel}
+    \frenchbsetup{ReduceListSpacing=false,CompactItemize=false}
+    \usepackage[autolanguage]{numprint}
+    \renewcommand{\FrenchLabelItem}{\textbullet}
+    \renewcommand{\FrenchLabelItem}{\textbullet}
+    \usepackage{icomma}
+    \usepackage{listings}
+    
+    \lstdefinestyle{java}{
+      language=Java,
+      showspaces=false,
+      showtabs=false,
+      breaklines=true,
+      showstringspaces=false,
+      breakatwhitespace=true,
+      commentstyle=\color{green},
+      keywordstyle=\color{blue},
+      stringstyle=\color{red},
+      basicstyle=\scriptsize,
+      moredelim=[il][\textcolor{grey}]{$$},
+      moredelim=[is][\textcolor{grey}]{\%\%}{\%\%}
+    }
+    \usepackage{xcolor}
+    \definecolor{ForestGreen}{RGB}{34,139,34}
+    
+    \lstset{ %
+	%  backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
+	basicstyle=\small\ttfamily,        % the size of the fonts that are used for the code
+	captionpos=t,                    % sets the caption-position to bottom
+	commentstyle=\small\color{ForestGreen},    % comment style
+	escapeinside={(*@}{@*)},          % if you want to add LaTeX within your code
+	keywordstyle=\color{blue},       % keyword style
+	stringstyle=\color{purple},       % keyword style
+	numberstyle=\tiny\color{black}, % the style that is used for the line-numbers
+	stepnumber=1,                    % the step between two line-numbers. If it's 1, each line will be numbered
+	title=\lstname,                   % show the filename of files included with \lstinputlisting; also try caption instead of title
+	language=Java,
+	breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+	breaklines=true,                 % sets automatic line breaking
+	extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+	showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+	showstringspaces=false,          % underline spaces within strings only
+	showtabs=false,                  % show tabs within strings adding particular underscores
+	tabsize=1,                       % sets default tabsize to 2 spaces
+	framexleftmargin=15pt,
+	frame = single,
+	numbers=left
+}
+    
+    \usepackage{hyperref}
+    \usepackage{xcolor}
+    \usepackage{spverbatim}
+    
+    \newcommand{\TODO}[1]{\textcolor{red}{#1}\GenericWarning{}{LaTeX Warning: TODO: #1}}\newcommand\todo\TODO
+
+    \AtBeginDocument{%
+      \renewcommand{\labelitemii}{$\circ$}%
+      \renewcommand{\labelitemiii}{$\diamon$}%
+      \renewcommand{\labelitemiv}{$\triangleright$}%
+    }
+
+    \geometry{
+      a4paper,%
+      left=2cm,right=2cm,%
+      marginparwidth=0.5cm,%
+      top=1.5cm,bottom=2.5cm,%
+      headsep=1em %-1em
+    }
+
+    \setlength{\theorempostskipamount}{1\baselineskip}
+    \newcounter{Cexe}
+    \renewcommand{\theCexe}{\Roman{Cexe}}
+    {%
+      \theorembodyfont{\mdseries}%
+      \theoremstyle{break}%
+      \newtheorem{exercise}[Cexe]{Exercice}%
+    }
+
+    \newcounter{Ccorr}[section]
+    \renewcommand{\theCcorr}{\Roman{Ccorr}}
+    {   \theorembodyfont{\upshape}
+      \theoremstyle{break}
+      \newtheorem{claim}[Ccorr]{Correction de l'exercice}
+    }
+
+    \renewcommand{\theenumi}{\arabic{enumi}}
+    \renewcommand{\theenumii}{\alph{enumii}}
+    \renewcommand{\theenumiii}{\roman{enumiii}}
+    \renewcommand{\labelenumi}{\textbf{\theenumi)}}
+    \renewcommand{\labelenumii}{\textbf{\theenumii)}}
+    \renewcommand{\labelenumiii}{\textbf{\theenumiii.}}
+    %\renewcommand{\thesection}{\Roman{section}}
+    %\renewcommand{\thesubsection}{\thesection-\alpha{subsection}}
+    %\renewcommand{\thesubsubsection}{\thesubsection.\arabic{subsubsection}}
+
+    \setlength{\parindent}{0pt}
+    \renewcommand{\vec}[1]{\ensuremath{\overrightarrow{#1\;}}}
+    \newcommand{\Euro}[1]{\text{\euros{\ensuremath{#1}}}}
+
+    % \setboolean{nominatif}{true} % Décommenter pour mettre un champs Nom:.......
+    \newcommand{\titre}{Application Web de Gestion de} % <---- TD 23 : L'écoulement des eaux
+    % \newcommand{\titre2}{Gestion de Rendez-Vous} % <---- TD 23 : L'écoulement des eaux
+    \newcommand{\classe}{} % <---- Groupe / Promo
+    \newcommand{\Date}{Septembre 2025}
+    \newcommand{\etablissement}{M1 MIAGE} % X l'année, Y le semestre
+    \newcommand{\discipline}{DevOps} % Prog1, JXT, etc.
+    \fancypagestyle{firstpage}{
+      \fancyhead{}
+      \lhead{\etablissement}
+      \rhead{\discipline}
+      \lfoot{\scriptsize{Jolan Philippe - 2025 / 2026}}
+      \cfoot{}
+      \rfoot{\thepage$/$\pageref{LastPage}}
+      \renewcommand{\footrulewidth}{0.4pt}
+      \renewcommand{\headrulewidth}{0.4pt}
+    }
+    \fancypagestyle{otherpage}{
+      \renewcommand{\headrulewidth}{0pt}
+      \renewcommand{\footrulewidth}{0.4pt}
+      \fancyhead{}
+      \lfoot{\scriptsize{\classe}}
+      \cfoot{\scriptsize{\titre}}
+      \rfoot{\thepage$/$\pageref{LastPage}}
+    }
+    \pagestyle{otherpage}%
+    \thispagestyle{firstpage}
+    
+    \usepackage{paralist}

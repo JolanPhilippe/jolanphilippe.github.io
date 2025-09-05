@@ -1,0 +1,109 @@
+\documentclass{article}%
+   \input{header}
+    \begin{document}
+    \noindent\begin{tabularx}{\textwidth}[t]{X>{\centering\arraybackslash}c>{\raggedleft\arraybackslash}X}
+      \classe&{\Huge TD1 : Principes DevOps} & \\
+    \end{tabularx}
+
+\section{Intégration continue}
+On développe une application web de gestion de réservations, composée de :
+\begin{itemize}
+  \item une API REST (backend en Python/Flask) ;
+  \item une base de données relationnelle (PostgreSQL) ;
+  \item une interface web (frontend en React).
+\end{itemize}
+
+L’équipe souhaite mettre en place une chaîne d’intégration continue (CI) permettant d’automatiser les tests, de valider les contributions via des Pull Requests.
+
+\subsection{Automatiser les tests}
+
+\begin{exercice}
+
+Expliquez quels types de tests peuvent être automatisés dans ce projet :
+\begin{itemize}
+  \item tests unitaires ;
+  \item tests d’intégration ;
+  \item tests end-to-end (E2E).
+\end{itemize}
+
+Pour chaque type de test, proposez :
+\begin{itemize}
+  \item un exemple concret adapté à ce projet (ex : test unitaire d’une fonction de calcul de disponibilité) ;
+  \item le moment où il est pertinent d’exécuter ces tests dans un pipeline CI (ex : à chaque commit, avant le déploiement, seulement la nuit).
+\end{itemize}
+\end{exercice}
+
+\subsection{Pull Request}
+
+On suppose qu’un contributeur ouvre une Pull Request (PR) pour ajouter une nouvelle fonctionnalité au backend.  
+Décrivez les étapes à suivre pour intégrer cette PR dans le projet, en précisant :
+\begin{enumerate}
+  \item les vérifications automatiques à exécuter (tests, linting, build) ;
+  \item les validations humaines nécessaires (review par un pair, approbation) ;
+  \item les actions automatiques possibles après merge (déploiement sur un environnement de staging, mise à jour de la documentation).
+\end{enumerate}
+
+
+\section{Déploiement d'un moteur de transformation sur une infrastructure Spark}
+
+\paragraph{Contexte.}  
+On souhaite déployer une infrastructure basée sur \textbf{Apache Spark}, afin de réaliser des transformations de données en environnement distribué (passage de modèles de classes vers des modèles relationnels).  
+L'assemblage cible de notre infrastructure comprend les éléments suivants :
+\begin{itemize}
+  \item un \textbf{Spark Master}, responsable de la coordination des tâches ;
+  \item trois \textbf{Spark Workers}, chargés de l'exécution des calculs distribués ;
+  \item un service \textbf{SparkTE}, servant d'interface utilisateur pour la soumission des transformations ;
+  \item une \textbf{base de données d’entrée} et une \textbf{base de données de sortie}, chacune possédant des réplicats.
+\end{itemize}
+
+\subsection{Relation d’ordre partiel strict}
+
+Rappelez les trois propriétés d'une relation d’ordre partiel strict :
+(càd irréflexivité, antisymétrie, transitivité).
+Illustrez chacune de ces propriétés à l’aide d’un exemple simple (hors contexte Spark), par exemple avec des relations sur les nombres entiers.
+
+\subsection{Modèle de composants}
+
+Modélisez l'architecture décrite en un \textbf{diagramme de composants} :
+\begin{itemize}
+  \item représentez les différents modules (Spark Master, Spark Workers, SparkTE, bases de données)
+  \item identifiez les relations de dépendance entre eux 
+  \item justifiez vos choix de dépendances en termes de contraintes de déploiement.
+\end{itemize}
+
+\subsection{Déployer une architecture Spark}
+
+En utilisant la notion d’ordre partiel strict, proposez un plan de déploiement dans les situations suivantes :
+\begin{enumerate}
+  \item \textbf{Déploiement initial} avec 1 Master et 3 Workers ;
+  \item \textbf{Remplacement d’un Spark Worker} défectueux ;
+  \item \textbf{Ajout d’un gestionnaire YARN} pour la gestion des ressources. Pour info, YARN se déploie comme un spark-worker;
+  \item \textbf{Changement des paramètres du Master} (redéploiement du service) ;
+  \item \textbf{Destruction complète} de l’infrastructure.
+\end{enumerate}
+
+Pour chaque scénario :
+\begin{itemize}
+  \item décrivez les relations de dépendances pertinentes ;
+  \item indiquez un ordre de déploiement (ou de retrait) valide.
+\end{itemize}
+
+\subsection{Utiliser l'Infrastructure-as-Code}
+
+Classez chacune des opérations suivantes, en fonction du type d’outil d'Infrastructure as Code (management d’application, provisionnement d’infrastructure, installation et configuration, orchestration) avec lequel l'effectuer :
+\begin{enumerate}
+  \item Créer une machine virtuelle sur un cloud provider (par ex. AWS, GCP).  
+  \item Construire une image Docker contenant Spark et ses dépendances.  
+  \item Lancer un conteneur Spark Worker à partir d’une image préexistante.  
+  \item Déployer un cluster Kubernetes pour héberger Spark.  
+  \item Définir la taille et la zone de disponibilité des disques persistants pour la base de données.  
+  \item Appliquer un script Ansible pour configurer la base de données (utilisateurs, droits).  
+  \item Mettre en place une règle de firewall ouvrant un port pour Spark Master.  
+  \item Définir dans Kubernetes un service exposant SparkTE via un LoadBalancer.  
+  \item Modifier le fichier de configuration \texttt{spark-defaults.conf} pour changer les paramètres du Master.  
+  \item Détruire toutes les ressources cloud associées au cluster (machines, volumes, réseaux).  
+\end{enumerate}
+
+Justifiez brièvement vos choix.
+
+\end{document}
