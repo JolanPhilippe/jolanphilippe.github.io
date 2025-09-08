@@ -37,7 +37,7 @@ Jolan Philippe, Maitre de conférence
 
 Université d'Orléans, équipe LMV
 
-Bureau tbd.
+Bureau C02 (dans la tour).
 
 ($\lambda$x.$\lambda$y.x@y) jolan.philippe1 univ-orleans.fr
 
@@ -722,6 +722,58 @@ On veut une \textbf{base de données maitre}, et \textbf{des réplicats} de cett
 \end{frame}
 
 % ----------------------------------------------------------------------------------
+\begin{frame}{Propriétés fondamentales de l'IaC}
+  \begin{alertblock}{Quatres pilliers}
+    \begin{itemize}
+      \item \textbf{Reproductibilité} : Peut-on utiliser la même configuration pour reproduire un environnement ou des ressources d'infrastructure ? 
+      \item \textbf{Idempotence} : Peut-on  exécuter à plusieurs reprises l'automatisation sur l'infrastructure sans modifier son état actuel ? 
+      \item \textbf{Composabilité} : Peut-on assembler n’importe quelle combinaison de ressources d’infrastructure sans reconstruire un nouveau système ?
+      \item \textbf{Evolutivité} : Peut-on modifier votre infrastructure et minimiser les perturbations du système global ?
+    \end{itemize}
+  \end{alertblock}
+
+Aves les solutions d'Infrastructure as Code : OUI 
+\end{frame}
+
+
+% ----------------------------------------------------------------------------------
+\begin{frame}{Reproductibilité}
+\begin{itemize}
+  \item Peut-on utiliser la même configuration pour reproduire un environnement ou des ressources d'infrastructure ? 
+\end{itemize}
+\begin{center}
+\input{figures/iac_reproducibility}
+\end{center}
+\end{frame}
+% ----------------------------------------------------------------------------------
+\begin{frame}{Idempotence}
+\begin{itemize}
+  \item Peut-on  exécuter à plusieurs reprises l'automatisation sur l'infrastructure sans modifier son état actuel ? 
+\end{itemize}
+\begin{center}
+\input{figures/iac_idempotency}
+\end{center}
+\end{frame}
+% ----------------------------------------------------------------------------------
+\begin{frame}{Composabilité}
+\begin{itemize} 
+  \item Peut-on assembler n’importe quelle combinaison de ressources d’infrastructure sans reconstruire un nouveau système ?
+\end{itemize}
+\begin{center}
+\input{figures/iac_composability}
+\end{center}
+\end{frame}
+% ----------------------------------------------------------------------------------
+\begin{frame}{Evolutivité}
+\begin{itemize}
+  \item Peut-on modifier votre infrastructure et minimiser les perturbations du système global ?
+\end{itemize}
+\begin{center}
+\input{figures/iac_evolvability}
+\end{center}
+\end{frame}
+
+% ----------------------------------------------------------------------------------
 \begin{frame}{Technologie d’Infrastructure as Code}
 
 \begin{table}[H]
@@ -795,7 +847,7 @@ TOSCA & \OKOKmark & \OKOKmark  & \OKOKmark \\
         \item Installer son application (gestion de configuration)
         \item Installer son application (orchestration)
     \end{itemize}
-    \item Interopérable, réutilisable, versionnable, automatisable, idempotent
+    \item Reproductible, idempotent, composable et évoluable.
   \end{itemize}
 \end{alertblock}
 
