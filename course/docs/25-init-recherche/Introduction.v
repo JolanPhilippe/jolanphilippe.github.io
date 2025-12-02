@@ -1,8 +1,5 @@
 (* From: HPCS 2017 - Tutorial                          *)
 (* http://frederic.loulergue.eu/hpcs2017               *)
-(* Frederic Loulergue                                  *)
-(*   School of Informatics Computing and Cyber Systems *)
-(*   Northern Arizona University                       *)
 
 Section Examples.
 
@@ -16,7 +13,7 @@ Section Examples.
     intro HAC.
     Show Proof.
     intro HBC.
-    apply HAC.
+    apply HBC.
     assumption.
   Qed.
 
