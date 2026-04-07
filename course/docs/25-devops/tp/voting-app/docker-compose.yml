@@ -1,0 +1,107 @@
+# version is now using "compose spec"
+# v2 and v3 are now combined!
+# docker-compose v1.27+ required
+
+services:
+
+  vote1:
+    image: tp-ansible-imta/vote
+    build:
+      context: ./vote
+      dockerfile: Dockerfile
+    depends_on:
+      - redis
+
+    networks:
+      - front-tier
+      - back-tier
+
+  vote2:
+    image: tp-ansible-imta/vote
+    build:
+      context: ./vote
+      dockerfile: Dockerfile
+    depends_on:
+      - redis
+    networks:
+      - front-tier
+      - back-tier
+
+  result:
+    image: tp-ansible-imta/result
+    build:
+      context: ./result
+    environment:
+      POSTGRES_HOST: "db"
+      POSTGRES_USER: "votingapp"
+      POSTGRES_PASSWORD: "votingappsecret"
+      POSTGRES_DB: "postgres"
+    depends_on:
+      - db
+    ports:
+      - "5050:80"
+      - "127.0.0.1:9229:9229"
+    networks:
+      - front-tier
+      - back-tier
+
+  worker:
+    image: tp-ansible-imta/worker
+    build:
+      context: ./worker
+    environment:
+      POSTGRES_HOST: "db"
+      POSTGRES_USER: "votingapp"
+      POSTGRES_PASSWORD: "votingappsecret"
+      POSTGRES_DB: "postgres"
+    depends_on:
+      - redis
+      - db
+    networks:
+      - back-tier
+
+  redis:
+    image: redis:alpine
+    networks:
+      - back-tier
+
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: "votingapp"
+      POSTGRES_PASSWORD: "votingappsecret"
+      POSTGRES_DB: "postgres"
+    volumes:
+      - "db-data:/var/lib/postgresql/data"
+    networks:
+      - back-tier
+
+  nginx:
+    image: tp-ansible-imta/nginx
+    build:
+      context: ./nginx
+    ports:
+      - "8000:8000"
+    depends_on:
+      - vote1
+      - vote2
+    networks:
+      - front-tier
+
+  seed:
+    image: eloip13009/seed-data:vote5000
+    build:
+      context: ./seed-data
+      dockerfile: Dockerfile-vote5000
+    depends_on:
+      - nginx
+    networks:
+      - front-tier
+    restart: "no"
+
+volumes:
+  db-data:
+
+networks:
+  front-tier:
+  back-tier:

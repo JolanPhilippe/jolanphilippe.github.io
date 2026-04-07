@@ -1,0 +1,10 @@
+services:
+  node1:
+    image: ubuntu-ansible
+    container_name: ansible-node1
+    hostname: node1
+    ports:
+      - "2221:22"
+    privileged: true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
