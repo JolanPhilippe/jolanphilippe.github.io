@@ -1,0 +1,110 @@
+syntax = "proto3";
+
+option java_package = "fr.miage.orleans.carrental.grpc";
+option java_multiple_files = true;
+
+service CarRentalService {
+  // recuperer une voiture par son identifiant.
+  rpc GetCar(GetCarRequest) returns (Car);
+
+  // recevoir les voitures disponibles une par une.
+  rpc SearchAvailableCars(SearchCarsRequest) returns (stream Car);
+
+  // creer, consulter et annuler une reservation.
+  rpc CreateReservation(CreateReservationRequest) returns (Reservation);
+  rpc GetReservation(GetReservationRequest) returns (Reservation);
+  rpc CancelReservation(CancelReservationRequest) returns (CancelReservationResponse);
+
+  // transmettre les observations de l'etat du vehicule.
+  rpc SubmitInspection(stream InspectionObservation) returns (InspectionSummary);
+}
+
+enum CarCategory {
+  CAR_CATEGORY_UNSPECIFIED = 0;
+  CAR_CATEGORY_ECONOMY = 1;
+  CAR_CATEGORY_SUV = 2;
+  CAR_CATEGORY_PREMIUM = 3;
+}
+
+message Car {
+  string id = 1;
+  string brand = 2;
+  string model = 3;
+  string city = 4;
+  CarCategory category = 5;
+  int64 price_per_day_cents = 6;
+  repeated string equipment = 7;
+}
+
+message GetCarRequest {
+  string car_id = 1;
+}
+
+message SearchCarsRequest {
+  string city = 1;
+  int64 start_epoch_seconds = 2;
+  int64 end_epoch_seconds = 3;
+  CarCategory category = 4; // UNSPECIFIED : toutes les categories.
+}
+
+enum ReservationStatus {
+  RESERVATION_STATUS_UNSPECIFIED = 0;
+  RESERVATION_STATUS_CONFIRMED = 1;
+  RESERVATION_STATUS_CANCELLED = 2;
+}
+
+message CreateReservationRequest {
+  string car_id = 1;
+  string customer_id = 2;
+  int64 start_epoch_seconds = 3;
+  int64 end_epoch_seconds = 4;
+}
+
+message GetReservationRequest {
+  string reservation_id = 1;
+}
+
+message CancelReservationRequest {
+  string reservation_id = 1;
+}
+
+message CancelReservationResponse {
+  bool cancelled = 1;
+}
+
+message Reservation {
+  string id = 1;
+  string car_id = 2;
+  string customer_id = 3;
+  int64 start_epoch_seconds = 4;
+  int64 end_epoch_seconds = 5;
+  int64 total_price_cents = 6;
+  ReservationStatus status = 7;
+}
+
+enum DamageSeverity {
+  DAMAGE_SEVERITY_UNSPECIFIED = 0;
+  DAMAGE_SEVERITY_NONE = 1;
+  DAMAGE_SEVERITY_MINOR = 2;
+  DAMAGE_SEVERITY_MAJOR = 3;
+}
+
+message InspectionObservation {
+  string reservation_id = 1;
+  string part = 2;        // Ex. "pare-chocs arriere".
+  string comment = 3;
+  DamageSeverity severity = 4;
+}
+
+message InspectionSummary {
+  string reservation_id = 1;
+  int32 observations_received = 2;
+  int32 damages_detected = 3;
+}
+
+message VehiclePosition {
+  string reservation_id = 1;
+  double latitude = 2;
+  double longitude = 3;
+  int64 timestamp_epoch_seconds = 4;
+}
